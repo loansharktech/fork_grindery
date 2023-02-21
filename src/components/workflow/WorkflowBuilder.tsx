@@ -37,14 +37,17 @@ type Props = {};
 
 const WorkflowBuilder = (props: Props) => {
   const { workflow } = useWorkflowContext();
-
+  console.log(`workflow`,workflow)
   // workflow steps output
   const [outputFields, setOutputFields] = useState<any[]>([]);
 
   return (
     <>
+      {/* top bar haed */}
       <WorkflowName />
+      {/* top bar on/off */}
       <WorkflowState />
+      {/* middle form */}
       <Wrapper>
         <WorkflowStepContextProvider
           type="trigger"

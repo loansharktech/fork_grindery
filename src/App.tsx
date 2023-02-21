@@ -6,6 +6,7 @@ import SignInPage from "./components/pages/SignInPage";
 import NexusStack from "./components/pages/NexusStack";
 import SignInContextProvider from "./context/SignInContext";
 
+import ForkPageMain from './Fork/Forkpagemain'
 function App() {
   return (
     <ThemeProvider>
@@ -20,6 +21,13 @@ function App() {
                 </SignInContextProvider>
               }
             ></Route>
+            <Route
+              path='/test'
+              element={
+                <ForkPageMain />
+              }
+            ></Route>
+
             <Route path="*" element={<NexusStack />}></Route>
           </Routes>
         </BrowserRouter>

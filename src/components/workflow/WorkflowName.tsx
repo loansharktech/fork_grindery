@@ -106,6 +106,8 @@ const WorkflowName = (props: Props) => {
     }
   }, [workflow.title]);
 
+  console.log(`workflow`,workflow)
+  
   return (
     <Container>
       <InputWrapper>

@@ -154,7 +154,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   // Nexus API client
   const [client, setClient] = useState<NexusClient | null>(null);
-
+    console.log(`client`,client)
   // change current active tab
   const changeTab = (name: string, query = "") => {
     const tab = RIGHTBAR_TABS.find((tab) => tab.name === name);
@@ -190,9 +190,13 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     setWorkflows([]);
   };
 
+  // here is get all the action list to revise can remove this 
   const getConnectors = async () => {
     let stagedCdss = [];
+    console.log(`client`,client)
+    console.log(`client`,client?.listDrivers())
     const cdss = await client?.listDrivers();
+    console.log(`client`,cdss)
     if (isLocalOrStaging) {
       stagedCdss = await client?.listDrivers("staging");
     }

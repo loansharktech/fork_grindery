@@ -153,81 +153,82 @@ const StepApp = (props: Props) => {
     (type === "trigger" && !workflow.trigger.connector) ||
     (type === "action" && !workflow.actions[step - 2]?.connector);
 
+  console.log(triggers)
   const options =
     type === "trigger"
       ? [
+        ...triggers.connectorsWithTriggers
+          .map((connector) => ({
+            value: connector.key,
+            label: connector.name,
+            icon: connector.icon,
+            paid: connector.pricing,
+            group: undefined,
+          }))
+          .filter(
+            (connector: any) =>
+              !NOT_READY_TRIGGERS.find(
+                (notReadyKey) =>
+                  notReadyKey && notReadyKey === connector.value
+              )
+          ),
+        ...[
           ...triggers.connectorsWithTriggers
             .map((connector) => ({
               value: connector.key,
               label: connector.name,
               icon: connector.icon,
+              disabled: true,
+              group: "Coming soon",
               paid: connector.pricing,
-              group: undefined,
             }))
-            .filter(
-              (connector: any) =>
-                !NOT_READY_TRIGGERS.find(
-                  (notReadyKey) =>
-                    notReadyKey && notReadyKey === connector.value
-                )
+            .filter((connector: any) =>
+              NOT_READY_TRIGGERS.find(
+                (notReadyKey) =>
+                  notReadyKey && notReadyKey === connector.value
+              )
             ),
-          ...[
-            ...triggers.connectorsWithTriggers
-              .map((connector) => ({
-                value: connector.key,
-                label: connector.name,
-                icon: connector.icon,
-                disabled: true,
-                group: "Coming soon",
-                paid: connector.pricing,
-              }))
-              .filter((connector: any) =>
-                NOT_READY_TRIGGERS.find(
-                  (notReadyKey) =>
-                    notReadyKey && notReadyKey === connector.value
-                )
-              ),
-            ...COMING_SOON_TRIGGERS,
-          ],
-        ]
+          ...COMING_SOON_TRIGGERS,
+        ],
+      ]
       : [
+        ...actions.connectorsWithActions
+          .map((connector) => ({
+            value: connector.key,
+            label: connector.name,
+            icon: connector.icon,
+            paid: connector.pricing,
+            group: undefined,
+          }))
+          .filter(
+            (connector: any) =>
+              !NOT_READY_ACTIONS.find(
+                (notReadyKey) =>
+                  notReadyKey && notReadyKey === connector.value
+              )
+          ),
+        ...[
           ...actions.connectorsWithActions
             .map((connector) => ({
               value: connector.key,
               label: connector.name,
               icon: connector.icon,
+              disabled: true,
+              group: "Coming soon",
               paid: connector.pricing,
-              group: undefined,
             }))
-            .filter(
-              (connector: any) =>
-                !NOT_READY_ACTIONS.find(
-                  (notReadyKey) =>
-                    notReadyKey && notReadyKey === connector.value
-                )
+            .filter((connector: any) =>
+              NOT_READY_ACTIONS.find(
+                (notReadyKey) =>
+                  notReadyKey && notReadyKey === connector.value
+              )
             ),
-          ...[
-            ...actions.connectorsWithActions
-              .map((connector) => ({
-                value: connector.key,
-                label: connector.name,
-                icon: connector.icon,
-                disabled: true,
-                group: "Coming soon",
-                paid: connector.pricing,
-              }))
-              .filter((connector: any) =>
-                NOT_READY_ACTIONS.find(
-                  (notReadyKey) =>
-                    notReadyKey && notReadyKey === connector.value
-                )
-              ),
-            ...COMING_SOON_ACTIONS,
-          ],
-        ];
+          ...COMING_SOON_ACTIONS,
+        ],
+      ];
 
 
-  console.log(options,type)
+  console.log(options, type)
 
   const visibleOptions = options.filter((option) =>
     option.label.toLowerCase().includes(search.toLowerCase())
@@ -239,6 +240,7 @@ const StepApp = (props: Props) => {
       : workflow.actions[index]?.connector || "";
 
   const handleOptionClick = (value: string) => {
+    console.log(`handleOptionClick`,step)
     if (type === "trigger") {
       updateWorkflow({
         "trigger.connector": value || "",
@@ -306,24 +308,24 @@ const StepApp = (props: Props) => {
           {visibleOptions.filter(
             (option) => option.group && option.group === "Coming soon"
           ).length > 0 && (
-            <>
-              <GroupHeader>Coming soon</GroupHeader>
-              {visibleOptions
-                .filter(
-                  (option) => option.group && option.group === "Coming soon"
-                )
-                .map((option) => (
-                  <Option key={option.value} className="coming-soon">
-                    <OptionIcon>
-                      <img src={option.icon} alt="" />
-                    </OptionIcon>
-                    <OptionTitleWrapper>
-                      <OptionTitle>{option.label}</OptionTitle>
-                    </OptionTitleWrapper>
-                  </Option>
-                ))}
-            </>
-          )}
+              <>
+                <GroupHeader>Coming soon</GroupHeader>
+                {visibleOptions
+                  .filter(
+                    (option) => option.group && option.group === "Coming soon"
+                  )
+                  .map((option) => (
+                    <Option key={option.value} className="coming-soon">
+                      <OptionIcon>
+                        <img src={option.icon} alt="" />
+                      </OptionIcon>
+                      <OptionTitleWrapper>
+                        <OptionTitle>{option.label}</OptionTitle>
+                      </OptionTitleWrapper>
+                    </Option>
+                  ))}
+              </>
+            )}
         </Options>
       </OptionsWrapper>
       <Showing>

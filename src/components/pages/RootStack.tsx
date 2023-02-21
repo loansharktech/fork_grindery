@@ -27,6 +27,8 @@ import CreateNexusNotificationPage from "./CreateNexusNotificationPage";
 import WorkflowHistoryPage from "./WorkflowHistoryPage";
 import WorkflowHistoryLogPage from "./WorkflowHistoryLogPage";
 
+// import ForkPageMain from '../pages/ForkPage/ForkPageMain'
+
 const DrawerWrapper = styled.div`
   @media (min-width: ${SCREEN.TABLET}) {
     .MuiPaper-root {
@@ -162,6 +164,11 @@ const RootStack = (props: Props) => {
               element={<WorkflowHistoryPage />}
               key={3}
             ></Route>
+            {/* <Route
+              path="/workflows/fork"
+              element={<ForkPageMain />}
+              key={4}
+            ></Route> */}
             <Route path="/connectors" element={<AppsPage />}></Route>
             <Route path="/history" element={<HistoryPage />}></Route>
             {/*<Route path="/transactions" element={<TransactionsPage />}></Route>
@@ -215,8 +222,8 @@ const RootStack = (props: Props) => {
                       ? "210px"
                       : width >= parseInt(SCREEN.TABLET.replace("px", "")) &&
                         width < parseInt(SCREEN.TABLET_XL.replace("px", ""))
-                      ? "0px"
-                      : "60px",
+                        ? "0px"
+                        : "60px",
                 }}
               >
                 <SidebarTabs />
@@ -239,8 +246,8 @@ const RootStack = (props: Props) => {
                       : "210px"
                     : width >= parseInt(SCREEN.TABLET.replace("px", "")) &&
                       width < parseInt(SCREEN.TABLET_XL.replace("px", ""))
-                    ? "0px"
-                    : "60px"
+                      ? "0px"
+                      : "60px"
                   : "0px",
               transition: "all 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
             }}

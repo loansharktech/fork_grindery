@@ -125,12 +125,11 @@ export const WorkflowContextProvider = ({
   let { key } = useParams();
   const { workspace } = useWorkspaceContext();
   const {
-    getWorkflowsList,
-    connectors: availableConnectors,
-    client,
+    getWorkflowsList, connectors: availableConnectors, client,
     workflows,
     user,
   } = useAppContext();
+  console.log(`availableConnectors`, availableConnectors)
 
   // loaded nexus connectors CDS
   const [connectors, setConnectors] = useState<Connector[]>(
@@ -207,18 +206,18 @@ export const WorkflowContextProvider = ({
   const actionConnectorIsSet = (index: number) =>
     Boolean(
       workflow &&
-        workflow.actions &&
-        workflow.actions[index] &&
-        workflow.actions[index].connector
+      workflow.actions &&
+      workflow.actions[index] &&
+      workflow.actions[index].connector
     );
 
   // check if action operation is selected
   const actionIsSet = (index: number) =>
     Boolean(
       workflow &&
-        workflow.actions &&
-        workflow.actions[index] &&
-        workflow.actions[index].operation
+      workflow.actions &&
+      workflow.actions[index] &&
+      workflow.actions[index].operation
     );
 
   // current workflow's trigger connector key
@@ -277,14 +276,14 @@ export const WorkflowContextProvider = ({
   // chech if trigger is authenticated (if required)
   const triggerIsAuthenticated = Boolean(
     (triggerConnector && !triggerConnector.authentication) ||
-      (workflow.trigger?.credentials && triggerConnector?.authentication)
+    (workflow.trigger?.credentials && triggerConnector?.authentication)
   );
 
   const actionIsAuthenticated = (index: number) =>
     Boolean(
       (actionConnector(index) && !actionConnector(index)?.authentication) ||
-        (workflow.actions[index]?.credentials &&
-          actionConnector(index)?.authentication)
+      (workflow.actions[index]?.credentials &&
+        actionConnector(index)?.authentication)
     );
 
   // list trigger's required field names
@@ -315,12 +314,12 @@ export const WorkflowContextProvider = ({
         workflow.trigger.input[field] !== "" &&
         workflow.trigger.input[field] !== null
     ).length === requiredTriggerFields.length &&
-      (trigger &&
+    (trigger &&
       trigger.operation &&
       trigger.operation.type === "blockchain:event"
-        ? workflow.trigger.input._grinderyChain &&
-          workflow.trigger.input._grinderyContractAddress
-        : true)
+      ? workflow.trigger.input._grinderyChain &&
+      workflow.trigger.input._grinderyContractAddress
+      : true)
   );
 
   // list action's required field names
@@ -341,11 +340,11 @@ export const WorkflowContextProvider = ({
       requiredActionFields(index).filter(
         (field: string) => workflow.actions[index]?.input?.[field]
       ).length === requiredActionFields(index).length &&
-        (action(index)?.operation?.type === "blockchain:call"
-          ? workflow.actions[index].input._grinderyChain &&
-            workflow.actions[index].input._grinderyContractAddress &&
-            workflow.actions[index].input._grinderyGasLimit
-          : true)
+      (action(index)?.operation?.type === "blockchain:call"
+        ? workflow.actions[index].input._grinderyChain &&
+        workflow.actions[index].input._grinderyContractAddress &&
+        workflow.actions[index].input._grinderyGasLimit
+        : true)
     );
   };
 
@@ -438,10 +437,14 @@ export const WorkflowContextProvider = ({
 
   // update current workflow
   const updateWorkflow = (data: any) => {
+    console.log(data)
+    console.log(`updateWorkflow`,workflow)
     let newWorkflow = { ...workflow };
     Object.keys(data).forEach((path) => {
+      console.log(path)
       _.set(newWorkflow, path, data[path]);
     });
+    console.log(`updateWorkflow`,newWorkflow)
     setWorkflow(newWorkflow);
   };
 
