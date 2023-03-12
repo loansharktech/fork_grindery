@@ -256,6 +256,7 @@ const StepHeader = (props: Props) => {
     });
   }
 
+  console.log(`this is connector:`,connector)
   return (
     <Container
       style={{ cursor: activeStep === step ? "default" : "pointer" }}
