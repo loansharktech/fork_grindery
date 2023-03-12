@@ -57,7 +57,7 @@ const WorkflowStep = ({ outputFields }: Props) => {
               {operation && operationIsAuthenticated && (
                 <StepInput outputFields={outputFields} />
               )}
-              <StepTest outputFields={outputFields} />
+              {/* <StepTest outputFields={outputFields} /> */}
             </>
           )}
         </Containerinner>

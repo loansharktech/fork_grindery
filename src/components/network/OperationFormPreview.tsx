@@ -129,7 +129,8 @@ const OperationFormPreview = (props: Props) => {
             </Alert>
           </AlertWrapper>
         )}
-        {(operation?.type === "blockchain:event" ||
+
+        {/* {(operation?.type === "blockchain:event" ||
           operation?.type === "blockchain:call") &&
           inputFields.filter(
             (inputfield: any) => inputfield.key === "_grinderyChain"
@@ -168,7 +169,8 @@ const OperationFormPreview = (props: Props) => {
                 setAddressBook={setAddressBook}
               />
             </InputWrapper>
-          )}
+          )} */}
+
         {inputFields &&
           inputFields.length > 0 &&
           inputFields

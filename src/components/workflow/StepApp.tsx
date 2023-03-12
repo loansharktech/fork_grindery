@@ -512,8 +512,6 @@ const StepApp = (props: Props) => {
       </Showing>
     </Container>
   ) : null;
-
-  <pre>{JSON.stringify(workflow,null,2)}</pre>
 };
 
 export default StepApp;
