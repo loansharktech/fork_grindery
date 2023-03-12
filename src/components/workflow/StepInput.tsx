@@ -422,7 +422,7 @@ const StepInput = ({ outputFields }: Props) => {
           )}
 
           <div>
-            {(operation?.operation?.type === "blockchain:event" ||
+            {/* {(operation?.operation?.type === "blockchain:event" ||
               operation?.operation?.type === "blockchain:call") &&
               (operation?.operation?.inputFields || []).filter(
                 (inputfield: Field) => inputfield.key === "_grinderyChain"
@@ -433,8 +433,8 @@ const StepInput = ({ outputFields }: Props) => {
                   errors={errors}
                   setErrors={setErrors}
                 />
-              )}
-            {(operation?.operation?.type === "blockchain:event" ||
+              )} */}
+            {/* {(operation?.operation?.type === "blockchain:event" ||
               operation?.operation?.type === "blockchain:call") &&
               (operation?.operation?.inputFields || []).filter(
                 (inputfield: Field) =>
@@ -451,7 +451,7 @@ const StepInput = ({ outputFields }: Props) => {
                   errors={errors}
                   setErrors={setErrors}
                 />
-              )}
+              )} */}
             {inputFields.map((inputField: Field) => (
               <WorkflowInputField
                 type={type}

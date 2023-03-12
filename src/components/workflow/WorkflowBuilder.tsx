@@ -70,7 +70,6 @@ const WorkflowBuilder = (props: Props) => {
         ))}
         <WorkflowSave />
       </Wrapper>
-      <pre>{JSON.stringify(workflow,null,2)}</pre>
     </>
   );
 };
