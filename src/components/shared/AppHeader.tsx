@@ -157,7 +157,7 @@ const AppHeader = (props: Props) => {
         </BackWrapper>
       )}
 
-      {!matchNewWorfklow ? (
+      {/* {!matchNewWorfklow ? (
         <>
           <LogoWrapper>
             <Logo variant="square" />
@@ -172,16 +172,16 @@ const AppHeader = (props: Props) => {
         </>
       ) : (
         <></>
-      )}
+      )} */}
 
-      {user && !matchNewWorfklow && (
+      {/* {user && !matchNewWorfklow && (
         <WorkspaceSelectorWrapper>
           <WorkspaceSelector />
         </WorkspaceSelectorWrapper>
-      )}
+      )} */}
       {!matchNewWorfklow && (
         <AppsMenuWrapper>
-          <AppsMenu apps={GRINDERY_APPS} />
+          {/* <AppsMenu apps={GRINDERY_APPS} /> */}
         </AppsMenuWrapper>
       )}
 

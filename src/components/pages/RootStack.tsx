@@ -164,15 +164,8 @@ const RootStack = (props: Props) => {
               element={<WorkflowHistoryPage />}
               key={3}
             ></Route>
-            {/* <Route
-              path="/workflows/fork"
-              element={<ForkPageMain />}
-              key={4}
-            ></Route> */}
             <Route path="/connectors" element={<AppsPage />}></Route>
             <Route path="/history" element={<HistoryPage />}></Route>
-            {/*<Route path="/transactions" element={<TransactionsPage />}></Route>
-        <Route path="/notifications" element={<NotificationsPage />}></Route>*/}
             <Route path="/settings" element={<SettingsPage />}></Route>
             <Route path="/workspaces/new" element={<WorkspaceCreatePage />} />
             <Route path="/workspaces/manage" element={<WorkspaceEditPage />} />

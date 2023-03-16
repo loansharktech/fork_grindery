@@ -13,7 +13,7 @@ const NexusStack = (props: Props) => {
   return (
     <WorkspaceContextProvider>
       <AppContextProvider>
-        <EarlyAccessModal />
+        {/* <EarlyAccessModal /> */}
         <Routes>
           <Route path="/auth" element={<AuthPage />}></Route>
           <Route path="/github/auth" element={<AuthPage />}></Route>
