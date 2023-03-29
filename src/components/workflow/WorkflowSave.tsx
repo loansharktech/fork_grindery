@@ -61,13 +61,13 @@ const WorkflowSave = (props: Props) => {
   const { editWorkflow } = useAppContext();
   const { key } = useParams();
   const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState<Number>(0);
   const [exchangeRate, setExchangeRate] = useState<Number>(0);
   const [snackbar, setSnackbar] = useState({
     opened: false,
     message: "",
     severity: "suscess",
   });
-
 
   useEffect(() => {
     (async () => {
@@ -92,6 +92,10 @@ const WorkflowSave = (props: Props) => {
       const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
       window.ethereum.enable();
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      lpTokenContract.methods.balanceOf(accounts[0]).call({}, (error: any, result: any) => {
+        setAmount(result);
+      })
       depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
         setExchangeRate(result);
       })
@@ -109,10 +113,13 @@ const WorkflowSave = (props: Props) => {
     // Implement the deposit functionality here
     console.log("Deposit clicked!");
 
-    const totalAmount = 1;
-    const stakeAmount = 0.1;
-    const singleTopupAmount = 0.01;
-    const healthFactorPercentage = 1.2;
+    console.log(workflow);
+    console.log("healthFactorIsBelow" + workflow.trigger?.input.healthFactorIsBelow);
+    console.log("percentageOfYourDepositeUsedForEachTopUp" + workflow.actions[0]?.input.percentageOfYourDepositeUsedForEachTopUp);
+
+    const totalAmount = Number(amount);
+    const singleTopupAmount = Number(amount) * Number(workflow.actions[0]?.input.percentageOfYourDepositeUsedForEachTopUp) / 100;
+    const healthFactorPercentage = workflow.trigger?.input.healthFactorIsBelow;
 
     window.ethereum.enable();
 
@@ -120,22 +127,22 @@ const WorkflowSave = (props: Props) => {
 
     let approveArgs = [
       "0x26B831D2Bf4C41D6C942784aDD61D4414a777a63",
-      window.web3.utils.toBN((Number(totalAmount) * 100000000).toFixed(0)).toString()
+      window.web3.utils.toBN((Number(totalAmount)).toFixed(0)).toString()
     ];
 
     let argsRegister = [
       userAccount[0] + "000000000000000000000000",
       "0x66756a6964616f00000000000000000000000000000000000000000000000000",
-      "10000000000000000",
+      window.web3.utils.toBN(totalAmount),
       [
         window.web3.utils.toBN(window.web3.utils.toWei((healthFactorPercentage).toString(), 'ether')).toString(),
         "0",
         "1",
         "0x9c1dcacb57ada1e9e2d3a8280b7cfc7eb936186f",
         "0x9f2b4eeb926d8de19289e93cbf524b6522397b05",
-        window.web3.utils.toBN((singleTopupAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-        window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-        window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
+        window.web3.utils.toBN((singleTopupAmount * 0.9999).toFixed(0)).toString(),
+        window.web3.utils.toBN((totalAmount * 0.9999 ).toFixed(0)).toString(),
+        window.web3.utils.toBN((totalAmount * 0.9999).toFixed(0)).toString(),
         "0x0000000000000000000000000000000000000000000000000000000000000001"
       ]
     ];
