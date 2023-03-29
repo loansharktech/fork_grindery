@@ -187,35 +187,94 @@ const WorkflowsTemplatePage = (props: Props) => {
   );
   let navigate = useNavigate();
 
-  const filteredItems = searchTerm
-    ? items
-        .map((item) => ({
-          ...item,
-          triggerAppName:
-            connectors.find((c) => c.key === item.trigger.connector)?.name ||
-            null,
-          actionsAppName: (item.actions || [])
-            .map(
-              (action: any) =>
-                connectors.find((a) => a.key === action.connector)?.name
-            )
-            .filter((a: any) => a)
-            .join(", "),
-        }))
-        .filter(
-          (item) =>
-            (item.title &&
-              item.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (item.triggerAppName &&
-              item.triggerAppName
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase())) ||
-            (item.actionsAppName &&
-              item.actionsAppName
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()))
-        )
-    : items;
+  // const filteredItems = searchTerm
+  //   ? items
+  //       .map((item) => ({
+  //         ...item,
+  //         triggerAppName:
+  //           connectors.find((c) => c.key === item.trigger.connector)?.name ||
+  //           null,
+  //         actionsAppName: (item.actions || [])
+  //           .map(
+  //             (action: any) =>
+  //               connectors.find((a) => a.key === action.connector)?.name
+  //           )
+  //           .filter((a: any) => a)
+  //           .join(", "),
+  //       }))
+  //       .filter(
+  //         (item) =>
+  //           (item.title &&
+  //             item.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+  //           (item.triggerAppName &&
+  //             item.triggerAppName
+  //               .toLowerCase()
+  //               .includes(searchTerm.toLowerCase())) ||
+  //           (item.actionsAppName &&
+  //             item.actionsAppName
+  //               .toLowerCase()
+  //               .includes(searchTerm.toLowerCase()))
+  //       )
+  //   : items;
+
+  const filteredItems = [
+    {
+      "title": "Workflow1",
+      "trigger": {
+        "type": "trigger",
+        "connector": "aave",
+        "operation": "changeInHealthFactor",
+        "input": {
+          "healthFactorIsBelow": "1.1"
+        }
+      },
+      "actions": [
+        {
+          "type": "action",
+          "connector": "smartVault",
+          "operation": "repay",
+          "input": {
+            "_grinderyGasLimit": "0.001",
+            "yourCurrentSmartVaultBalance": "2",
+            "percentageOfYourDepositeUsedForEachTopUp": "20"
+          }
+        }
+      ],
+      "creator": "eip155:1:0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7",
+      "state": "off",
+      "source": "urn:grindery-staging:nexus",
+      "signature": "{\"title\":\"Name your workflow\",\"trigger\":{\"type\":\"trigger\",\"connector\":\"aave\",\"operation\":\"changeInHealthFactor\",\"input\":{\"healthFactorIsBelow\":\"1.1\"}},\"actions\":[{\"type\":\"action\",\"connector\":\"smartVault\",\"operation\":\"repay\",\"input\":{\"_grinderyGasLimit\":\"0.001\",\"yourCurrentSmartVaultBalance\":\"2\",\"percentageOfYourDepositeUsedForEachTopUp\":\"20\"}}],\"creator\":\"eip155:1:0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7\",\"state\":\"off\",\"source\":\"urn:grindery-staging:nexus\",\"system\":{\"actions\":[{\"selected\":true,\"authenticated\":true,\"configured\":true,\"tested\":false}],\"trigger\":{\"selected\":true,\"authenticated\":true,\"configured\":true,\"tested\":true}}}",
+      "key": "staging-7ed18c1e-695c-45fa-91fc-f323d3a2d70d"
+    },
+    {
+      "title": "Workflow2",
+      "trigger": {
+        "type": "trigger",
+        "connector": "aave",
+        "operation": "changeInHealthFactor",
+        "input": {
+          "healthFactorIsBelow": "1.1"
+        }
+      },
+      "actions": [
+        {
+          "type": "action",
+          "connector": "smartVault",
+          "operation": "repay",
+          "input": {
+            "_grinderyGasLimit": "0.001",
+            "yourCurrentSmartVaultBalance": "2",
+            "percentageOfYourDepositeUsedForEachTopUp": "20"
+          }
+        }
+      ],
+      "creator": "eip155:1:0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7",
+      "state": "off",
+      "source": "urn:grindery-staging:nexus",
+      "signature": "{\"title\":\"Name your workflow\",\"trigger\":{\"type\":\"trigger\",\"connector\":\"smartVault\",\"operation\":\"repay\",\"input\":{\"yourCurrentSmartVaultBalance\":\"2\",\"percentageOfYourDepositeUsedForEachTopUp\":\"3\"}},\"actions\":[{\"type\":\"action\",\"connector\":\"aave\",\"operation\":\"changeInHealthFactor\",\"input\":{\"_grinderyGasLimit\":\"0.001\",\"healthFactorIsBelow\":\"2\"}}],\"creator\":\"eip155:1:0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7\",\"state\":\"off\",\"source\":\"urn:grindery-staging:nexus\",\"system\":{\"actions\":[{\"selected\":true,\"authenticated\":true,\"configured\":true,\"tested\":false}],\"trigger\":{\"selected\":true,\"authenticated\":true,\"configured\":true,\"tested\":true}}}",
+      "key": "staging-441c9882-c3c4-4b58-bc2f-1ee1705c231e"
+    }
+  ]
 
   const handleSearchChange = (e: string) => {
     setSearchTerm(e);
@@ -461,11 +520,11 @@ const WorkflowRow = ({ item }: WorkflowRowProps) => {
         }
         RightComponent={
           <ItemActionsWrapper>
-            <Switch
+            {/* <Switch
               value={enabled}
               // onChange={handleStateChange} 
               onChange={handleWorkflowAble}
-            />
+            /> */}
             <IconButton
               color=""
               onClick={() => {
@@ -474,7 +533,7 @@ const WorkflowRow = ({ item }: WorkflowRowProps) => {
               }}
               icon={ICONS.PENCIL}
             />
-            <MenuButtonWrapper>
+            {/* <MenuButtonWrapper>
               <IconButton onClick={handleMenuOpen} icon={ICONS.DOTS_HORIZONTAL} />
             </MenuButtonWrapper>
             <Menu
@@ -533,7 +592,7 @@ const WorkflowRow = ({ item }: WorkflowRowProps) => {
                   ]
                   : []),
               ]}
-            />
+            /> */}
           </ItemActionsWrapper>
         }
       />

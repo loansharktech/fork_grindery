@@ -26,6 +26,7 @@ import NotificationsModal from "../shared/NotificationsModal";
 import CreateNexusNotificationPage from "./CreateNexusNotificationPage";
 import WorkflowHistoryPage from "./WorkflowHistoryPage";
 import WorkflowHistoryLogPage from "./WorkflowHistoryLogPage";
+import WorkflowsTemplatePage from "./WorkflowsTemplatePage"
 
 // import ForkPageMain from '../pages/ForkPage/ForkPageMain'
 
@@ -164,7 +165,7 @@ const RootStack = (props: Props) => {
               element={<WorkflowHistoryPage />}
               key={3}
             ></Route>
-            <Route path="/workflows/template" element={<WorkflowsPage />} />
+            <Route path="/workflows/template" element={<WorkflowsTemplatePage />} />
             <Route path="/connectors" element={<AppsPage />}></Route>
             <Route path="/history" element={<HistoryPage />}></Route>
             <Route path="/settings" element={<SettingsPage />}></Route>
