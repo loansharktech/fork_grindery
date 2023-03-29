@@ -68,7 +68,6 @@ const WorkflowSave = (props: Props) => {
     severity: "suscess",
   });
 
-
   useEffect(() => {
     (async () => {
       if (localStorage.getItem("isWalletConnected") === "true") {
@@ -109,10 +108,13 @@ const WorkflowSave = (props: Props) => {
     // Implement the deposit functionality here
     console.log("Deposit clicked!");
 
-    const totalAmount = 1;
-    const stakeAmount = 0.1;
-    const singleTopupAmount = 0.01;
-    const healthFactorPercentage = 1.2;
+    console.log(workflow.trigger?.input.healthFactorIsBelow);
+    console.log(workflow.actions[0]?.input.percentageOfYourDepositeUsedForEachTopUp);
+    console.log(workflow.actions[0]?.input.yourCurrentSmartVaultBalance);
+
+    const totalAmount = Number(workflow.actions[0]?.input.yourCurrentSmartVaultBalance);
+    const singleTopupAmount = Number(workflow.actions[0]?.input.yourCurrentSmartVaultBalance) * Number(workflow.actions[0]?.input.yourCurrentSmartVaultBalance) / 100;
+    const healthFactorPercentage = workflow.trigger?.input.healthFactorIsBelow;
 
     window.ethereum.enable();
 
@@ -134,8 +136,8 @@ const WorkflowSave = (props: Props) => {
         "0x9c1dcacb57ada1e9e2d3a8280b7cfc7eb936186f",
         "0x9f2b4eeb926d8de19289e93cbf524b6522397b05",
         window.web3.utils.toBN((singleTopupAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-        window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
-        window.web3.utils.toBN((stakeAmount * 0.9999 * 100000000).toFixed(0)).toString(),
+        window.web3.utils.toBN((totalAmount * 0.9999 * 100000000).toFixed(0)).toString(),
+        window.web3.utils.toBN((totalAmount * 0.9999 * 100000000).toFixed(0)).toString(),
         "0x0000000000000000000000000000000000000000000000000000000000000001"
       ]
     ];
