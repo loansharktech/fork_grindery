@@ -249,7 +249,7 @@ const WorkflowsTemplatePage = (props: Props) => {
           ))}
         </ItemsWrapper>
       </Wrapper>
-      <pre>{JSON.stringify(filteredItems,null,2)}</pre>
+      {/* <pre>{JSON.stringify(filteredItems,null,2)}</pre> */}
     </>
   );
 };

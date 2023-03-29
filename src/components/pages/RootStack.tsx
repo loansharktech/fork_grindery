@@ -230,7 +230,7 @@ const RootStack = (props: Props) => {
       {size === "desktop" && (
         <>
           <AppHeader />
-          <pre>{JSON.stringify(appOpened, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(appOpened, null, 2)}</pre> */}
           <div
             style={{
               marginLeft:
