@@ -256,7 +256,6 @@ const StepHeader = (props: Props) => {
     });
   }
 
-  console.log(`this is connector:`,connector)
   return (
     <Container
       style={{ cursor: activeStep === step ? "default" : "pointer" }}
@@ -276,13 +275,23 @@ const StepHeader = (props: Props) => {
       )}
 
       <div>
-        <Title>{type === "trigger" ? "Trigger" : "Action"}</Title>
-        <Description style={{ fontSize: connector ? "20px" : "16px" }}>
+
+        <Title style={{
+          "color": "rgba(0,0,0,1)",
+          "fontSize": "14px",
+        }}
+        >{type === "trigger" ? "Selected Trigger" : "Selected Action"}</Title>
+
+        <Description style={{
+          color: "rgba(38,38,38,1)",
+          fontSize: "21px",
+          fontWeight: "500"
+        }}>
           {connector
             ? connector.name
             : type === "trigger"
-            ? "When this occurs..."
-            : "Then do this..."}
+              ? "Trigger when..."
+              : "Then do this..."}
           {connector && operation && <> - {operation.name}</>}
         </Description>
       </div>
@@ -292,9 +301,9 @@ const StepHeader = (props: Props) => {
             style={{ marginLeft: "auto", display: "block" }}
             src={
               operation &&
-              operationIsAuthenticated &&
-              operationIsConfigured &&
-              (type === "trigger" || operationIsTested)
+                operationIsAuthenticated &&
+                operationIsConfigured &&
+                (type === "trigger" || operationIsTested)
                 ? ICONS.CHECK_CIRCLE
                 : ICONS.EXCLAMATION
             }
@@ -302,8 +311,28 @@ const StepHeader = (props: Props) => {
           />
         </>
       )}
-      {connector && activeStep === step && (
+      {/* {connector && activeStep === step && (
         <ChangeButton onClick={handleChangeClick}>Change</ChangeButton>
+      )} */}
+      {connector && activeStep === step && (
+          <button
+            style={{
+              borderRadius: "20px",
+              border: "1px solid rgba(71,145,255, 1)",
+              backgroundColor: "rgba(255,255,255, 1)",
+              cursor: "pointer",
+              padding: "10px 50px 10px 50px",
+              marginLeft: "auto",
+            }}
+            onClick={handleChangeClick}
+          ><span style={{
+            color: "rgba(71,145,255,1)",
+            // fontFamily: "Poppins-Bold",
+            fontSize: "16px",
+            fontWeight: "700",
+            textTransform: "uppercase",
+          }}
+          >Change</span></button>
       )}
       {type !== "trigger" && menuItems.length > 0 && (
         <div style={{ marginLeft: connector ? "0" : "auto" }}>

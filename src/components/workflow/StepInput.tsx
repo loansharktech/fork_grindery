@@ -51,6 +51,8 @@ const Header = styled.div`
 const OperationStateIcon = styled.img`
   display: block;
   margin-left: auto;
+  width: 16px;
+  height: 16px;
 `;
 
 const Content = styled.div`
@@ -189,6 +191,7 @@ const StepInput = ({ outputFields }: Props) => {
   };
 
   const handleContinueClick = () => {
+    console.log(`start handleContinueClick`)
     setInputError("");
     setErrors(true);
 
@@ -221,20 +224,21 @@ const StepInput = ({ outputFields }: Props) => {
           ]
         : []),
     ]);
-
+    // const check = validator.compile(validationSchema);
+    // const validated = check(currentInput);
+    // if (typeof validated === "boolean") {
+    //   setActiveRow(activeRow + 1);
+    //   /*if (type === "trigger") {
+    //     setActiveStep((activeStep: number) => activeStep + 1);
+    //   }*/
+    // } else {
+    //   setErrors(validated);
+    //   setInputError("Please complete all required fields.");
+    // }
     const check = validator.compile(validationSchema);
-
     const validated = check(currentInput);
-
-    if (typeof validated === "boolean") {
-      setActiveRow(activeRow + 1);
-      /*if (type === "trigger") {
-        setActiveStep((activeStep: number) => activeStep + 1);
-      }*/
-    } else {
-      setErrors(validated);
-      setInputError("Please complete all required fields.");
-    }
+    setActiveRow(activeRow + 1);
+    console.log(`finish handleContinueClick`)
   };
 
   const handleChainChange = (value: string) => {
@@ -397,9 +401,10 @@ const StepInput = ({ outputFields }: Props) => {
         ) : (
           <img src={ICONS.ANGLE_DOWN} alt="" />
         )}
-        <span>{type === "trigger" ? "Set up trigger" : "Set up action"}</span>
+        <span>{type === "trigger" ? "2. Set up trigger" : "2. Set up action"}</span>
 
         <OperationStateIcon
+          // src={operationIsConfigured ? ICONS.CHECK_CIRCLE : ICONS.EXCLAMATION}
           src={operationIsConfigured ? ICONS.CHECK_CIRCLE : ICONS.EXCLAMATION}
           alt=""
         />
@@ -497,7 +502,13 @@ const StepInput = ({ outputFields }: Props) => {
             )}
           </div>
           <ButtonWrapper>
-            <Button disabled={loading} onClick={handleContinueClick}>
+            <Button style={{
+                              borderRadius: "20px",
+                              border: "1px solid rgb(71, 145, 255)",
+                              backgroundColor: "rgba(71,145,255, 1)",
+                              padding: "10px 50px 10px 50px"
+            }}
+            disabled={loading} onClick={handleContinueClick}>
               Continue
             </Button>
           </ButtonWrapper>

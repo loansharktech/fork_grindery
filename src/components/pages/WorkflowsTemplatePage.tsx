@@ -178,7 +178,7 @@ const MenuButtonWrapper = styled.div`
 
 type Props = {};
 
-const WorkflowsPage = (props: Props) => {
+const WorkflowsTemplatePage = (props: Props) => {
   const { workflows, connectors } = useAppContext();
   const items = workflows || [];
   let [searchParams] = useSearchParams();
@@ -556,4 +556,4 @@ const WorkflowRow = ({ item }: WorkflowRowProps) => {
   );
 };
 
-export default WorkflowsPage;
+export default WorkflowsTemplatePage;

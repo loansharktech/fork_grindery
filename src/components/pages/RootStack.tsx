@@ -164,6 +164,7 @@ const RootStack = (props: Props) => {
               element={<WorkflowHistoryPage />}
               key={3}
             ></Route>
+            <Route path="/workflows/template" element={<WorkflowsPage />} />
             <Route path="/connectors" element={<AppsPage />}></Route>
             <Route path="/history" element={<HistoryPage />}></Route>
             <Route path="/settings" element={<SettingsPage />}></Route>
@@ -225,9 +226,11 @@ const RootStack = (props: Props) => {
           </BarWrapper>
         </Drawer>
       </DrawerWrapper>
+
       {size === "desktop" && (
         <>
           <AppHeader />
+          <pre>{JSON.stringify(appOpened, null, 2)}</pre>
           <div
             style={{
               marginLeft:
@@ -246,6 +249,7 @@ const RootStack = (props: Props) => {
             }}
           >
             <ContentWrapper>{renderContent()}</ContentWrapper>
+
           </div>
         </>
       )}
@@ -273,6 +277,7 @@ const RootStack = (props: Props) => {
           autoHideDuration={null}
         />
       )}
+
     </>
   );
 };

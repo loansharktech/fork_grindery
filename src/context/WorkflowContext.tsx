@@ -476,6 +476,7 @@ export const WorkflowContextProvider = ({
   };
 
   const saveWorkflow = async (callback?: () => void) => {
+    console.log(`saveWorkflow`,workflow)
     if (workflow) {
       const readyWorkflow = {
         ...workflow,

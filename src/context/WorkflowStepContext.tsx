@@ -1554,11 +1554,11 @@ export const WorkflowStepContextProvider = ({
               "inputFields": [
                 {
                   "key": "healthFactorIsBelow",
-                  "label": "Health Factor Is Below",
+                  "label": "Health Factor Is Below*",
                   "type": "string",
                   "placeholder": "0",
                   "list": false,
-                  "required": true
+                  "required": false
                 }
               ],
               "outputFields": [],
@@ -1580,11 +1580,11 @@ export const WorkflowStepContextProvider = ({
               "inputFields": [
                 {
                   "key": "healthFactorIsBelow",
-                  "label": "Health Factor Is Below",
+                  "label": "Health Factor Is Below*",
                   "type": "string",
                   "placeholder": "0",
                   "list": false,
-                  "required": true
+                  "required": false
                 }
               ],
               "outputFields": [],
@@ -1619,7 +1619,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "yourCurrentSmartVaultBalance",
                   "label": "Your Current Smart Vault Balance",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Select Your Smart Vault Position",
                   "list": false,
                   "required": true
                 },
@@ -1627,7 +1627,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
                   "label": "Percentage of your deposite used for each top-up",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Enter the Percentage",
                   "list": false,
                   "required": true
                 }
@@ -1651,7 +1651,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "yourCurrentSmartVaultBalance",
                   "label": "Your Current Smart Vault Balance",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Select Your Smart Vault Position",
                   "list": false,
                   "required": true
                 },
@@ -1659,7 +1659,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
                   "label": "Percentage of your deposite used for each top-up",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Enter the Percentage",
                   "list": false,
                   "required": true
                 }
@@ -1685,7 +1685,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "yourCurrentSmartVaultBalance",
                   "label": "Your Current Smart Vault Balance",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Select Your Smart Vault Position",
                   "list": false,
                   "required": true
                 },
@@ -1693,7 +1693,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
                   "label": "Percentage of your deposite used for each top-up",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Enter the Percentage",
                   "list": false,
                   "required": true
                 }
@@ -1717,7 +1717,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "yourCurrentSmartVaultBalance",
                   "label": "Your Current Smart Vault Balance",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Select Your Smart Vault Position",
                   "list": false,
                   "required": true
                 },
@@ -1725,7 +1725,7 @@ export const WorkflowStepContextProvider = ({
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
                   "label": "Percentage of your deposite used for each top-up",
                   "type": "string",
-                  "placeholder": "0",
+                  "placeholder": "Enter the Percentage",
                   "list": false,
                   "required": true
                 }
