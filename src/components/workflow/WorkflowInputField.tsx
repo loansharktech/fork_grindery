@@ -15,6 +15,17 @@ import { debounce } from "throttle-debounce";
 import { jsonrpcObj } from "../../helpers/utils";
 import useWorkflowStepContext from "../../hooks/useWorkflowStepContext";
 
+const dataHong = require('../../abi/Hong.json');
+const lpPoolAbi = require('../../abi/backd/lpPool.json');
+const FujiOracle = require('../../abi/fujidao/FujiOracle.json');
+
+const btcTokenAddress = '0x9C1DCacB57ADa1E9e2D3a8280B7cfC7EB936186F';
+const depositContractAddress = '0xCE7cb549c42Ba8a6654AdE82f3d77D6F7d2BCD78';
+const LPtoken = '0x9f2b4EEb926d8de19289E93CBF524b6522397B05';
+const FujiOracleAddress = '0x707c7C644a733E71E97C54Ee0F9686468d74b9B4';
+const WBTC = '0x9C1DCacB57ADa1E9e2D3a8280B7cfC7EB936186F';
+const USDT = '0x02823f9B469960Bb3b1de0B3746D4b95B7E35543';
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -100,8 +111,43 @@ const WorkflowInputField = ({
 }: Props) => {
   const { user, client, evmChains } = useAppContext();
   const { updateWorkflow, workflow, setLoading } = useWorkflowContext();
-  const { connector, setConnector, operation, setOperationIsTested } =
-    useWorkflowStepContext();
+  const { connector, setConnector, operation, setOperationIsTested } = useWorkflowStepContext();
+  const [initloadingFinish, setInitloadingFinish] = useState(false)
+  const [amount, setAmount] = useState<Number>(0);
+  console.log(amount)
+  const [exchangeRate, setExchangeRate] = useState<Number>(0);
+  console.log(exchangeRate)
+  const [priceOfBtc, setPriceOfBtc] = useState<Number>(0);
+
+  useEffect(() => {
+    (async ()=>{
+      if (inputField && inputField.default && !workflowInputValue) {
+        handleFieldChange(inputField.default);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (window.web3) {
+        try {
+          console.log(`start get web3 amount`)
+          const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
+          const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+          const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
+          await window.ethereum.enable();
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const balance = await lpTokenContract.methods.balanceOf(accounts[0]).call();
+          setAmount(balance);
+          const exchangeRate = await depositContract.methods.exchangeRate().call();
+          setExchangeRate(exchangeRate);
+          const argsPriceOfBtc = [USDT, WBTC, 2];
+          const priceOfBtc = await oracle.methods.getPriceOf(...argsPriceOfBtc).call();
+          setPriceOfBtc(priceOfBtc / 100);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      setInitloadingFinish(true)
+    })
+    ()
+  }, []);
 
   const workflowStep =
     type === "trigger" ? workflow.trigger : workflow.actions[index];
@@ -140,11 +186,11 @@ const WorkflowInputField = ({
   const [valuesNum, setValuesNum] = useState(
     Array.isArray(workflowValue) && workflowValue.length > 1
       ? [
-          ...workflowValue
-            .slice(1)
-            .filter((e) => e !== "" && typeof e !== "undefined")
-            .map((e, i) => i + 1),
-        ]
+        ...workflowValue
+          .slice(1)
+          .filter((e) => e !== "" && typeof e !== "undefined")
+          .map((e, i) => i + 1),
+      ]
       : []
   );
 
@@ -164,10 +210,10 @@ const WorkflowInputField = ({
     setErrors(
       typeof errors !== "boolean"
         ? [
-            ...errors.filter(
-              (error: any) => error && error.field !== inputField.key
-            ),
-          ]
+          ...errors.filter(
+            (error: any) => error && error.field !== inputField.key
+          ),
+        ]
         : errors
     );
 
@@ -302,10 +348,16 @@ const WorkflowInputField = ({
   );
 
   const renderField = (field: Field, idx?: number) => {
+    console.log(workflowValue)
+    console.log(field)
+    console.log(idx)
     const v =
       typeof idx !== "undefined" && Array.isArray(workflowValue)
         ? workflowValue[idx]
-        : workflowValue;
+        : (["yourCurrentSmartVaultBalance"].includes(field.key)
+          ? Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString()
+          : workflowValue
+        );
     const commonProps = {
       placeholder: field.placeholder || "",
       onChange: (v: string) => {
@@ -314,19 +366,22 @@ const WorkflowInputField = ({
       label: field.label || field.key || "",
       required: !!field.required,
       tooltip: field.helpText || "",
+      // error: "false",
       error: !field.list ? error : !v ? error : false,
       value: v,
     };
 
-    if (field.readonly) {
+    if (field.readonly || ["yourCurrentSmartVaultBalance"].includes(field.key)) {
+      console.log(commonProps.label)
+      console.log(commonProps.value)
       return (
         <ReadOnlyWrapper>
           <RichInput
             {...commonProps}
-            onChange={() => {}}
+            onChange={() => { }}
             readonly
             options={[]}
-            copy
+            copy={false}
           />
         </ReadOnlyWrapper>
       );
@@ -378,98 +433,98 @@ const WorkflowInputField = ({
     inputField.updateFieldDefinition,
   ]);
 
-  useEffect(() => {
-    if (inputField && inputField.default && !workflowInputValue) {
-      handleFieldChange(inputField.default);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  return (
-    <React.Fragment key={inputField.key}>
-      {inputField && (
-        <>
-          {inputField.type === "info" &&
-          (inputField.label || inputField.helpText) ? (
-            <AlertWrapper>
-              <Alert
-                color="warning"
-                elevation={0}
-                icon={<img src={ICONS.WARNING} width={20} height={20} alt="" />}
-              >
-                <div style={{ textAlign: "left" }}>
-                  {inputField.label && (
-                    <WarningTitle>{inputField.label}</WarningTitle>
-                  )}
-                  {inputField.helpText && (
-                    <WarningText>{inputField.helpText}</WarningText>
-                  )}
-                </div>
-              </Alert>
-            </AlertWrapper>
-          ) : (
-            <>
-              <InputWrapper>
-                {renderField(inputField, inputField.list ? 0 : undefined)}
-                {inputField.list && (
-                  <IconButtonWrapper>
-                    <IconButton
-                      icon={ICONS.PLUS}
-                      onClick={() => {
-                        setValuesNum((currentValuesNum) => [
-                          ...currentValuesNum,
-                          (currentValuesNum[currentValuesNum.length - 1] || 0) +
-                            1,
-                        ]);
-                      }}
-                    />
-                  </IconButtonWrapper>
-                )}
-              </InputWrapper>
-              {valuesNum.length > 0 &&
-                inputField.list &&
-                valuesNum.map((idx, i) => (
-                  <InputWrapper
-                    key={idx.toString()}
-                    style={{ marginTop: "0px" }}
-                  >
-                    {renderField(
-                      { ...inputField, key: inputField.key + "_" + (i + 1) },
-                      inputField.list ? i + 1 : undefined
+  if (initloadingFinish === true) {
+    return (
+      <React.Fragment key={inputField.key}>
+        {inputField && (
+          <>
+            {inputField.type === "info" &&
+              (inputField.label || inputField.helpText) ? (
+              <AlertWrapper>
+                <Alert
+                  color="warning"
+                  elevation={0}
+                  icon={<img src={ICONS.WARNING} width={20} height={20} alt="" />}
+                >
+                  <div style={{ textAlign: "left" }}>
+                    {inputField.label && (
+                      <WarningTitle>{inputField.label}</WarningTitle>
                     )}
+                    {inputField.helpText && (
+                      <WarningText>{inputField.helpText}</WarningText>
+                    )}
+                  </div>
+                </Alert>
+              </AlertWrapper>
+            ) : (
+              <>
+                <InputWrapper>
+                  {renderField(inputField, inputField.list ? 0 : undefined)}
+                  {inputField.list && (
                     <IconButtonWrapper>
                       <IconButton
-                        icon={ICONS.TRASH}
+                        icon={ICONS.PLUS}
                         onClick={() => {
-                          if (Array.isArray(workflowValue)) {
-                            const curVal = [...workflowValue];
-                            curVal.splice(i + 1, 1);
-                            const key =
-                              type === "trigger"
-                                ? "trigger.input." + inputField.key
-                                : "actions[" +
-                                  index +
-                                  "].input." +
-                                  inputField.key;
-                            updateWorkflow({
-                              [key]: curVal,
-                            });
-                          }
-                          setValChanged(true);
                           setValuesNum((currentValuesNum) => [
-                            ...currentValuesNum.filter((i2) => i2 !== idx),
+                            ...currentValuesNum,
+                            (currentValuesNum[currentValuesNum.length - 1] || 0) +
+                            1,
                           ]);
                         }}
                       />
                     </IconButtonWrapper>
-                  </InputWrapper>
-                ))}
-            </>
-          )}
-        </>
-      )}
-    </React.Fragment>
-  );
+                  )}
+                </InputWrapper>
+                {valuesNum.length > 0 &&
+                  inputField.list &&
+                  valuesNum.map((idx, i) => (
+                    <InputWrapper
+                      key={idx.toString()}
+                      style={{ marginTop: "0px" }}
+                    >
+                      {renderField(
+                        { ...inputField, key: inputField.key + "_" + (i + 1) },
+                        inputField.list ? i + 1 : undefined
+                      )}
+                      <IconButtonWrapper>
+                        <IconButton
+                          icon={ICONS.TRASH}
+                          onClick={() => {
+                            if (Array.isArray(workflowValue)) {
+                              const curVal = [...workflowValue];
+                              curVal.splice(i + 1, 1);
+                              const key =
+                                type === "trigger"
+                                  ? "trigger.input." + inputField.key
+                                  : "actions[" +
+                                  index +
+                                  "].input." +
+                                  inputField.key;
+                              updateWorkflow({
+                                [key]: curVal,
+                              });
+                            }
+                            setValChanged(true);
+                            setValuesNum((currentValuesNum) => [
+                              ...currentValuesNum.filter((i2) => i2 !== idx),
+                            ]);
+                          }}
+                        />
+                      </IconButtonWrapper>
+                    </InputWrapper>
+                  ))}
+              </>
+            )}
+          </>
+        )}
+      </React.Fragment>
+    )
+  } else {
+    return (
+      <div></div>
+    )
+  }
 };
 
 export default WorkflowInputField;
