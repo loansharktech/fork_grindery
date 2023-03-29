@@ -162,6 +162,13 @@ export const RIGHTBAR_TABS: {
     label: "Notifications",
     path: "/notifications",
   },*/
+  {
+    id: 6,
+    name: "TEMPLATE",
+    icon: ICONS.BELL,
+    label: "Template",
+    path: "/workflows/template",
+  },
 ];
 
 export const BLOCKCHAINS = [

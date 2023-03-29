@@ -23,7 +23,8 @@ type ContextProps = {
   appOpened: boolean;
   setAppOpened: (a: boolean) => void;
   workflows: Workflow[];
-  setWorkflows: (a: Workflow[]) => void;
+  // setWorkflows: (a: Workflow[]) => void;
+  setWorkflows: (a: any) => void;
   connectors: Connector[];
   getWorkflowsList: () => void;
   getWorkflowHistory: (
@@ -49,6 +50,7 @@ type ContextProps = {
   >;
   apps: any[];
   handleDevModeChange: (a: boolean) => void;
+  handleUpdateWorkflowList: (a: any) => void;
   devMode: boolean;
   deleteWorkflow: (userAccountId: string, key: string) => void;
   client: NexusClient | null;
@@ -89,6 +91,7 @@ export const AppContext = createContext<ContextProps>({
   setWorkflowExecutions: defaultFunc,
   apps: [],
   handleDevModeChange: defaultFunc,
+  handleUpdateWorkflowList: defaultFunc,
   devMode: false,
   deleteWorkflow: defaultFunc,
   client: null,
@@ -111,7 +114,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   // Dev mode state
   const cachedDevMode = localStorage.getItem("gr_dev_mode");
   const [devMode, setDevMode] = useState(cachedDevMode === "true");
-
   const [evmChains, setEvmChains] = useState<Chain[]>([]);
 
   // Auth hook
@@ -136,8 +138,8 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   const [chekingOptIn, setChekingOptIn] = useState<boolean>(true);
 
   // user's workflows list
-  const [workflows, setWorkflows] = useState<Workflow[]>([]);
-
+  // const [workflows, setWorkflows] = useState<Workflow[]>([]);
+  const [workflows, setWorkflows] = useState([]);
   // connectors list
   const [connectors, setConnectors] = useState<Connector[]>([]);
 
@@ -154,7 +156,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
 
   // Nexus API client
   const [client, setClient] = useState<NexusClient | null>(null);
-    console.log(`client`,client)
   // change current active tab
   const changeTab = (name: string, query = "") => {
     const tab = RIGHTBAR_TABS.find((tab) => tab.name === name);
@@ -169,7 +170,6 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
       .catch((err) => {
         console.error("listWorkflows error:", err.message);
       });
-
     if (res) {
       setWorkflows(
         _.reverse(
@@ -193,10 +193,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   // here is get all the action list to revise can remove this 
   const getConnectors = async () => {
     let stagedCdss = [];
-    console.log(`client`,client)
-    console.log(`client`,client?.listDrivers())
     const cdss = await client?.listDrivers();
-    console.log(`client`,cdss)
     if (isLocalOrStaging) {
       stagedCdss = await client?.listDrivers("staging");
     }
@@ -357,6 +354,10 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   };
 
+  const handleUpdateWorkflowList = (workflowLists:any) =>{
+    setWorkflows(workflowLists)
+  }
+
   const handleDevModeChange = (e: boolean) => {
     localStorage.setItem("gr_dev_mode", e.toString());
     setDevMode(e);
@@ -492,6 +493,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
         apps,
         devMode,
         handleDevModeChange,
+        handleUpdateWorkflowList,
         deleteWorkflow,
         client,
         access_token,

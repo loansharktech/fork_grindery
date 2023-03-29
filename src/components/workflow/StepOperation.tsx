@@ -136,7 +136,9 @@ const StepOperation = (props: Props) => {
   };
 
   const handleContinueClick = () => {
+    console.log(`start handleContinueClick`)
     setActiveRow(activeRow + 1);
+    console.log(`finish handleContinueClick`)
   };
 
   const handleHeaderClick = () => {

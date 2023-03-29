@@ -191,6 +191,7 @@ const StepInput = ({ outputFields }: Props) => {
   };
 
   const handleContinueClick = () => {
+    console.log(`start handleContinueClick`)
     setInputError("");
     setErrors(true);
 
@@ -223,20 +224,21 @@ const StepInput = ({ outputFields }: Props) => {
           ]
         : []),
     ]);
-
+    // const check = validator.compile(validationSchema);
+    // const validated = check(currentInput);
+    // if (typeof validated === "boolean") {
+    //   setActiveRow(activeRow + 1);
+    //   /*if (type === "trigger") {
+    //     setActiveStep((activeStep: number) => activeStep + 1);
+    //   }*/
+    // } else {
+    //   setErrors(validated);
+    //   setInputError("Please complete all required fields.");
+    // }
     const check = validator.compile(validationSchema);
-
     const validated = check(currentInput);
-
-    if (typeof validated === "boolean") {
-      setActiveRow(activeRow + 1);
-      /*if (type === "trigger") {
-        setActiveStep((activeStep: number) => activeStep + 1);
-      }*/
-    } else {
-      setErrors(validated);
-      setInputError("Please complete all required fields.");
-    }
+    setActiveRow(activeRow + 1);
+    console.log(`finish handleContinueClick`)
   };
 
   const handleChainChange = (value: string) => {

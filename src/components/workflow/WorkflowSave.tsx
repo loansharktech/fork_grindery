@@ -54,6 +54,7 @@ const WorkflowSave = (props: Props) => {
   });
 
   const handleClick = async () => {
+    console.log(`workflowsave: `,key)
     if (key) {
       setLoading(true);
       const wf = { ...workflow };
@@ -76,6 +77,7 @@ const WorkflowSave = (props: Props) => {
           setLoading(false);
         }
       );
+      console.log(`workflowsave: `,wf)
       updateWorkflow({
         state: wf.state === "on" && workflowReadyToSave ? "on" : "off",
       });
