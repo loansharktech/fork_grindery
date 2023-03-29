@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from "@mui/material";
+
 import styled from "styled-components";
 import { Grid } from '@mui/material'
 import { IconButton, AppsMenu, Text } from "grindery-ui";
@@ -173,6 +175,122 @@ const AppHeader = (props: Props) => {
     navigate("/workflows");
   };
 
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [value, setValue] = useState(0);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handlePromptClose = () => {
+    setOpen(false);
+  };
+
+  const handlePromptClose2 = () => {
+    setOpen2(false);
+  };
+
+  const handlePromptClose3 = () => {
+    setOpen3(false);
+  };
+
+  const handleDeposit = () => {
+    setOpen(false);
+    setOpen2(true);
+  };
+
+  const handleWithdraw = () => {
+    setOpen(false);
+    setOpen3(true);
+  };
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(Number(event.target.value));
+  };
+
+  const handleConfirm = async () => {
+    // Implement the deposit functionality here
+    console.log("Deposit clicked!");
+
+    window.ethereum.enable();
+
+    const userAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    let approveArgs = [
+      depositContractAddress,
+      window.web3.utils.toBN((Number(value) * 100000000).toFixed(0)).toString()
+    ];
+
+    let args = [
+      window.web3.utils.toBN((Number(value) * 100000000).toFixed(0)).toString(),
+    ];
+
+    window.ethereum.enable();
+
+    const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
+    const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
+    const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+
+    await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
+      console.log(result);
+    });
+
+    await btcTokenContract.methods.approve(...approveArgs).send({ from: userAccount[0] })
+      .on("error", (error: any, receipt: any) => {
+        console.error(error);
+        setOpen2(false);
+      }).then(async (receipt: any) => {
+        await depositContract.methods.deposit(...args).send({ from: userAccount[0] })
+          .on("error", (error: any, receipt: any) => {
+            console.error(error);
+            setOpen2(false);
+          }).then(async (receipt: any) => {
+            lpTokenContract.methods.balanceOf(userAccount[0]).call({}, (error: any, result: any) => {
+              setAmount(result);
+              setOpen2(false);
+            })
+          });
+
+      });
+  };
+
+  const handleConfirm2 = async () => {
+    // Implement the deposit functionality here
+    console.log("Deposit clicked!");
+
+    window.ethereum.enable();
+
+    const userAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    let args = [
+      window.web3.utils.toBN((Number(value) * 100000000 / window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(0)).toString(),
+    ];
+
+    window.ethereum.enable();
+
+    const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
+    const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
+    const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+
+    await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
+      console.log(result);
+    });
+
+    await depositContract.methods.redeem(...args).send({ from: userAccount[0] })
+      .on("error", (error: any, receipt: any) => {
+        console.error(error);
+        setOpen3(false);
+      }).then(async (receipt: any) => {
+        lpTokenContract.methods.balanceOf(userAccount[0]).call({}, (error: any, result: any) => {
+          setAmount(result);
+          setOpen3(false);
+        })
+      });
+
+  };
 
   useEffect(() => {
     (async () => {
@@ -190,27 +308,30 @@ const AppHeader = (props: Props) => {
 
 
   useEffect(() => {
-    if (window.web3) {
-      try {
+    async function fetchMyAPI() {
 
-        const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-        const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
-        const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
-        window.ethereum.enable();
-        window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
-          lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error: any, result: any) => {
-            setAmount(result);
-          })
-          depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
-            setExchangeRate(result);
-          })
+      const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
+      const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+      const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
+      window.ethereum.enable();
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-          let argsPriceOfBtc = [USDT, WBTC, 2]
-          oracle.methods.getPriceOf(...argsPriceOfBtc).call({}, (error: any, result: any) => {
-            setPriceOfBtc(result / 100);
-          });
+        lpTokenContract.methods.balanceOf(accounts[0]).call({}, (error: any, result: any) => {
+          setAmount(result);
+        })
+        depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
+          setExchangeRate(result);
+        })
+
+        let argsPriceOfBtc = [USDT, WBTC, 2]
+        oracle.methods.getPriceOf(...argsPriceOfBtc).call({}, (error: any, result: any) => {
+          setPriceOfBtc(result / 100);
         });
 
+    }
+    if (window.web3) {
+      try {
+        fetchMyAPI()
       } catch (error) {
         console.log(error);
       }
@@ -219,6 +340,47 @@ const AppHeader = (props: Props) => {
 
   return (
     <Wrapper>
+      <Dialog open={open} onClose={handlePromptClose}>
+        <DialogTitle>Please select one of the following options:</DialogTitle>
+        <DialogActions>
+          <Button sx={{ color: "black" }}onClick={handleDeposit}>Deposit BTC</Button>
+          <Button sx={{ color: "black" }}onClick={handleWithdraw}>Withdraw BTC</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={open2} onClose={handlePromptClose2}>
+        <DialogTitle>Enter amount of BTC:</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            type="number"
+            value={value}
+            onChange={handleChange}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button sx={{ color: "black" }}onClick={handleConfirm}>Deposit BTC</Button>
+          <Button sx={{ color: "black" }}onClick={handlePromptClose2}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={open3} onClose={handlePromptClose3}>
+        <DialogTitle>Enter amount of BTC:</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            type="number"
+            value={value}
+            onChange={handleChange}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button sx={{ color: "black" }}onClick={handleConfirm2}>Withdraw BTC</Button>
+          <Button sx={{ color: "black" }}onClick={handlePromptClose3}>Close</Button>
+        </DialogActions>
+      </Dialog>
       {user && matchNewWorfklow && (
         <BackWrapper>
           <IconButton icon={ICONS.BACK} onClick={handleBack} color="" />
@@ -268,64 +430,13 @@ const AppHeader = (props: Props) => {
 
       {/* {user && (
         <ConnectWrapper>
-          <Text variant="persistent" value={
-            "Vault Balance: "
-            + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
-            + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
-            + ")"
-          } />
-          {`     `}{`     `}{`     `}
-          <button
-            onClick={async () => {
-              // Prompt the user for the BTC amount
-              const btcAmountString = prompt('Please enter the BTC amount:');
-              if (!btcAmountString) {
-                return; // User cancelled
-              }
-
-              window.ethereum.enable();
-
-              const userAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-              let approveArgs = [
-                depositContractAddress,
-                window.web3.utils.toBN((Number(btcAmountString) * 100000000).toFixed(0)).toString()
-              ];
-
-              let args = [
-                window.web3.utils.toBN((Number(btcAmountString) * 100000000).toFixed(0)).toString(),
-              ];
-
-              window.ethereum.enable();
-
-              const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
-              const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-              const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
-
-              await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
-                console.log(result);
-              });
-
-              await btcTokenContract.methods.approve(...approveArgs).send({ from: userAccount[0] })
-                .on("error", (error: any, receipt: any) => {
-                  console.error(error);
-                }).then(async (receipt: any) => {
-
-                  console.log(receipt);
-
-                  await depositContract.methods.deposit(...args).send({ from: userAccount[0] })
-                    .on("error", (error: any, receipt: any) => {
-                      console.error(error);
-                    }).then(async (receipt: any) => {
-                      lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error: any, result: any) => {
-                        setAmount(result);
-                      })
-                    });
-
-                });
-            }}
-          >
-            Deposit BTC Smart Vault
+          <button onClick={handleOpen}>
+            <Text variant="persistent" value={
+              "Vault Balance: "
+              + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
+              + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
+              + ")"
+            } />
           </button>
         </ConnectWrapper>
       )} */}
