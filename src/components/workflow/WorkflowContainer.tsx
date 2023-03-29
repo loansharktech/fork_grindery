@@ -6,6 +6,7 @@ import WorkflowBuilder from "./WorkflowBuilder";
 type Props = {};
 
 const WorkflowContainer = (props: Props) => {
+  console.log(`WorkflowContainer`)
   const { accessAllowed } = useAppContext();
   return accessAllowed ? (
     <WorkflowContextProvider>

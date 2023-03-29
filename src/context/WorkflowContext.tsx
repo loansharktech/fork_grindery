@@ -159,6 +159,7 @@ export const WorkflowContextProvider = ({
       ? "urn:grindery-staging:nexus"
       : "urn:grindery:nexus",
   });
+  console.log(`workflow`,workflow)
 
   // is data loading
   const [loading, setLoading] = useState(false);
@@ -531,6 +532,7 @@ export const WorkflowContextProvider = ({
   }, [user]);
 
   useEffect(() => {
+    console.log(`use effect key`,key)
     if (key) {
       const selectedWorkflow = workflows.find((wf) => wf.key === key);
       if (selectedWorkflow) {
