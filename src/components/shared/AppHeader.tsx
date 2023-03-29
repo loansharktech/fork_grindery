@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Grid } from '@mui/material'
 import { IconButton, AppsMenu, Text } from "grindery-ui";
 import useAppContext from "../../hooks/useAppContext";
 import Logo from "./Logo";
@@ -197,21 +198,21 @@ const AppHeader = (props: Props) => {
         const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
         window.ethereum.enable();
         window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
-          lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error : any, result :any) => {
+          lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error: any, result: any) => {
             setAmount(result);
           })
-          depositContract.methods.exchangeRate().call({}, (error : any, result :any) => {
+          depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
             setExchangeRate(result);
           })
 
           let argsPriceOfBtc = [USDT, WBTC, 2]
-          oracle.methods.getPriceOf(...argsPriceOfBtc).call({}, (error: any, result : any) => {
+          oracle.methods.getPriceOf(...argsPriceOfBtc).call({}, (error: any, result: any) => {
             setPriceOfBtc(result / 100);
           });
         });
 
       } catch (error) {
-         console.log(error);
+        console.log(error);
       }
     }
   }, [window.web3])
@@ -265,12 +266,12 @@ const AppHeader = (props: Props) => {
         </ConnectWrapper>
       )}
 
-      {user && (
+      {/* {user && (
         <ConnectWrapper>
           <Text variant="persistent" value={
-            "Vault Balance: " 
+            "Vault Balance: "
             + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
-            + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc) ).toFixed(2)).toLocaleString()
+            + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
             + ")"
           } />
           {`     `}{`     `}{`     `}
@@ -316,7 +317,7 @@ const AppHeader = (props: Props) => {
                     .on("error", (error: any, receipt: any) => {
                       console.error(error);
                     }).then(async (receipt: any) => {
-                      lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error : any, result :any) => {
+                      lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error: any, result: any) => {
                         setAmount(result);
                       })
                     });
@@ -327,11 +328,83 @@ const AppHeader = (props: Props) => {
             Deposit BTC Smart Vault
           </button>
         </ConnectWrapper>
-      )}
+      )} */}
 
       {user && (
         <UserWrapper style={{ marginLeft: matchNewWorfklow ? "auto" : 0 }}>
-          <UserMenu />
+          <div>
+            <Grid container>
+              <Grid item>
+              <ConnectWrapper>
+          <Text variant="persistent" value={
+            "Vault Balance: "
+            + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
+            + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
+            + ")"
+          } />
+          {`     `}{`     `}{`     `}
+          <button
+            onClick={async () => {
+              // Prompt the user for the BTC amount
+              const btcAmountString = prompt('Please enter the BTC amount:');
+              if (!btcAmountString) {
+                return; // User cancelled
+              }
+
+              window.ethereum.enable();
+
+              const userAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+              let approveArgs = [
+                depositContractAddress,
+                window.web3.utils.toBN((Number(btcAmountString) * 100000000).toFixed(0)).toString()
+              ];
+
+              let args = [
+                window.web3.utils.toBN((Number(btcAmountString) * 100000000).toFixed(0)).toString(),
+              ];
+
+              window.ethereum.enable();
+
+              const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
+              const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
+              const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+
+              await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
+                console.log(result);
+              });
+
+              await btcTokenContract.methods.approve(...approveArgs).send({ from: userAccount[0] })
+                .on("error", (error: any, receipt: any) => {
+                  console.error(error);
+                }).then(async (receipt: any) => {
+
+                  console.log(receipt);
+
+                  await depositContract.methods.deposit(...args).send({ from: userAccount[0] })
+                    .on("error", (error: any, receipt: any) => {
+                      console.error(error);
+                    }).then(async (receipt: any) => {
+                      lpTokenContract.methods.balanceOf("0xe71fa402007FAD17dA769D1bBEfA6d0790fCe2c7").call({}, (error: any, result: any) => {
+                        setAmount(result);
+                      })
+                    });
+
+                });
+            }}
+          >
+            Deposit BTC Smart Vault
+          </button>
+        </ConnectWrapper>
+              </Grid>
+              <Grid item style={{marginLeft:"100px"}}>
+                <UserMenu />
+              </Grid>
+            </Grid>
+            {/* <span>123</span>
+            <span></span> */}
+          </div>
+          {/* <UserMenu /> */}
         </UserWrapper>
       )}
 
