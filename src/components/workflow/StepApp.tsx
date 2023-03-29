@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { TextField } from '@mui/material';
 import { TextInput } from "grindery-ui";
 import useWorkflowContext from "../../hooks/useWorkflowContext";
 import {
@@ -331,7 +332,6 @@ const StepApp = (props: Props) => {
     (type === "trigger" && !workflow.trigger.connector) ||
     (type === "action" && !workflow.actions[step - 2]?.connector);
 
-  console.log(triggers)
 
   // const options =
   //   type === "trigger"
@@ -407,7 +407,6 @@ const StepApp = (props: Props) => {
   //     ];
 
 
-  console.log(options, type)
 
   const visibleOptions = options.filter((option) =>
     option.label.toLowerCase().includes(search.toLowerCase())
@@ -419,7 +418,6 @@ const StepApp = (props: Props) => {
       : workflow.actions[index]?.connector || "";
 
   const handleOptionClick = (value: string) => {
-    console.log(`handleOptionClick`,step,value)
     if (type === "trigger") {
       updateWorkflow({
         "trigger.connector": value || "",
@@ -459,8 +457,8 @@ const StepApp = (props: Props) => {
         <TextInput
           value={search}
           onChange={handleSearchChange}
-          label={type === "trigger" ? "Select a trigger" : "Select an action"}
-          placeholder="Search use case or protocol"
+          label={type === "trigger" ? "Select an trigger" : "Select an action"}
+          placeholder="Search type or protocol"
           icon="search"
           type="input-icon"
         />

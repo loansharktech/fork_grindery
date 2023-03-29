@@ -84,6 +84,7 @@ export const ICONS: { [key: string]: string } = {
   ANGLE_UP: "/images/icons/angle-up.svg",
   EXCLAMATION: "/images/icons/exclamation.svg",
   CHECK_CIRCLE: "/images/icons/check-circle.svg",
+  TICK_ICON: "/images/icons/Flat-tick-icon.png",
   // Dev network
   GRINDERY_DEV_LOGO: "/images/icons/grindery-iso.svg",
   NEXUS_SQUARE: "/images/icons/nexus-square.svg",
@@ -93,6 +94,7 @@ export const ICONS: { [key: string]: string } = {
   NETWORK_RADIO_EMPTY: "/images/icons/network-radio-empty.svg",
   GITHUB_LOGO_DARK: "/images/icons/github-dark.svg",
   GITHUB_LOGO_LIGHT: "/images/icons/github-light.svg",
+
 };
 
 export const RIGHTBAR_TABS: {

@@ -157,7 +157,7 @@ const AppHeader = (props: Props) => {
         </BackWrapper>
       )}
 
-      {/* {!matchNewWorfklow ? (
+      {!matchNewWorfklow ? (
         <>
           <LogoWrapper>
             <Logo variant="square" />
@@ -167,12 +167,12 @@ const AppHeader = (props: Props) => {
               navigate("/");
             }}
           >
-            Flow
+            Loanshark
           </CompanyNameWrapper>
         </>
       ) : (
         <></>
-      )} */}
+      )}
 
       {/* {user && !matchNewWorfklow && (
         <WorkspaceSelectorWrapper>

@@ -38,6 +38,8 @@ const Header = styled.div`
 const OperationStateIcon = styled.img`
   display: block;
   margin-left: auto;
+  width: 16px;
+  height: 16px;
 `;
 
 const Content = styled.div`
@@ -90,19 +92,19 @@ const StepOperation = (props: Props) => {
   const operations =
     type === "trigger"
       ? connector?.triggers?.map((availableTrigger, i) => ({
-          value: availableTrigger.key,
-          label: availableTrigger.display?.label,
-          icon: availableTrigger.display?.icon || connector?.icon || "",
-          description: availableTrigger.display?.description,
-          group: availableTrigger.display?.featured ? "Featured" : "Others",
-        }))
+        value: availableTrigger.key,
+        label: availableTrigger.display?.label,
+        icon: availableTrigger.display?.icon || connector?.icon || "",
+        description: availableTrigger.display?.description,
+        group: availableTrigger.display?.featured ? "Featured" : "Others",
+      }))
       : connector?.actions?.map((availableAction) => ({
-          value: availableAction.key,
-          label: availableAction.display?.label,
-          icon: availableAction.display?.icon || connector?.icon || "",
-          description: availableAction.display?.description,
-          group: availableAction.display?.featured ? "Featured" : "Others",
-        }));
+        value: availableAction.key,
+        label: availableAction.display?.label,
+        icon: availableAction.display?.icon || connector?.icon || "",
+        description: availableAction.display?.description,
+        group: availableAction.display?.featured ? "Featured" : "Others",
+      }));
 
   const options = [
     ..._.orderBy(
@@ -153,11 +155,16 @@ const StepOperation = (props: Props) => {
         ) : (
           <img src={ICONS.ANGLE_DOWN} alt="" />
         )}
-        <span>
-          {type === "trigger" ? "Choose an event" : "Choose an action"}
+        <span style={{
+          color: "rgba(38,38,38,1)",
+          fontSize: "16px",
+          fontWeight: "500",
+        }}>
+          {type === "trigger" ? "1. Choose an event" : "1. Choose an action"}
         </span>
 
         <OperationStateIcon
+          // src={selectedOperationKey ? ICONS.CHECK_CIRCLE : ICONS.EXCLAMATION}
           src={selectedOperationKey ? ICONS.CHECK_CIRCLE : ICONS.EXCLAMATION}
           alt=""
         />
@@ -166,7 +173,7 @@ const StepOperation = (props: Props) => {
         <Content>
           {options.filter((op: any) => op.group === "Featured").length > 0 ? (
             <Autocomplete
-              label={type === "trigger" ? "Event" : "Action"}
+              label={type === "trigger" ? "Select an event" : "Select an action"}
               placeholder={
                 type === "trigger" ? "Select a Trigger" : "Select an action"
               }
@@ -221,6 +228,12 @@ const StepOperation = (props: Props) => {
 
           <ButtonWrapper>
             <Button
+              style={{
+                borderRadius: "20px",
+                border: "1px solid rgb(71, 145, 255)",
+                backgroundColor: "rgba(71,145,255, 1)",
+                padding: "10px 50px 10px 50px"
+              }}
               disabled={!Boolean(selectedOperationKey)}
               onClick={handleContinueClick}
             >

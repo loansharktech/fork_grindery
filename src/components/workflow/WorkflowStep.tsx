@@ -38,7 +38,7 @@ const WorkflowStep = ({ outputFields }: Props) => {
   return (
     <>
       {type === "action" ? <StepsDivider height={16} /> : null}
-      <Container
+      {/* <Container
         style={{
           boxShadow:
             activeStep === step
@@ -57,7 +57,33 @@ const WorkflowStep = ({ outputFields }: Props) => {
               {operation && operationIsAuthenticated && (
                 <StepInput outputFields={outputFields} />
               )}
-              {/* <StepTest outputFields={outputFields} /> */}
+            </>
+          )}
+        </Containerinner>
+      </Container> */}
+      <Container
+        style={{
+          borderRadius: "6px",
+boxShadow: "0px 0px 10px 2px rgba(138,171,170, 0.3)",
+backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.797012) 100%)",
+
+          // boxShadow:
+          //   activeStep === step
+          //     ? "0px 10px 40px -3px rgba(0, 0, 0, 0.04)"
+          //     : "none",
+        }}
+      >
+        <Containerinner>
+          <StepHeader />
+          <StepApp />
+          {activeStep === step && (
+            <>
+              <StepOperation />
+              {operation && <StepAuthentication />}
+
+              {operation && operationIsAuthenticated && (
+                <StepInput outputFields={outputFields} />
+              )}
             </>
           )}
         </Containerinner>

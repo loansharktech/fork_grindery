@@ -86,7 +86,13 @@ const WorkflowSave = (props: Props) => {
 
   return (
     <Container>
-      <Button disabled={loading} onClick={handleClick}>
+      <Button style={{
+                        borderRadius: "20px",
+                        border: "1px solid rgb(71, 145, 255)",
+                        backgroundColor: "rgba(71,145,255, 1)",
+                        padding: "10px 100px 10px 100px"
+      }}
+      disabled={loading} onClick={handleClick}>
         Save workflow
       </Button>
       <Snackbar

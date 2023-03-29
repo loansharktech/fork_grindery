@@ -48,10 +48,10 @@ const Img = styled.img`
   height: 322px;
   @media (min-width: ${SCREEN.TABLET}) {
     width: 100%;
-    max-width: 500px;
+    max-width: 300px;
     height: 100%;
-    max-height: 547px;
   }
+  max-height: 300px;
 `;
 
 const Desc = styled.p`
@@ -85,7 +85,7 @@ const WelcomePage = (props: Props) => {
   return (
     <Container>
       <Wrapper>
-        <Img src="/images/welcome.svg" alt="Welcome" />
+        <Img src="/images/favicon.png" alt="Welcome" />
         <Title>Welcome to Flow</Title>
         <Desc>
           We are the easiest way for people and organizations to connect Apps
