@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from "@mui/material";
 
 import styled from "styled-components";
+import { Grid } from '@mui/material'
 import { IconButton, AppsMenu, Text } from "grindery-ui";
 import useAppContext from "../../hooks/useAppContext";
 import Logo from "./Logo";
@@ -315,17 +316,17 @@ const AppHeader = (props: Props) => {
       window.ethereum.enable();
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-        lpTokenContract.methods.balanceOf(accounts[0]).call({}, (error: any, result: any) => {
-          setAmount(result);
-        })
-        depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
-          setExchangeRate(result);
-        })
+      lpTokenContract.methods.balanceOf(accounts[0]).call({}, (error: any, result: any) => {
+        setAmount(result);
+      })
+      depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
+        setExchangeRate(result);
+      })
 
-        let argsPriceOfBtc = [USDT, WBTC, 2]
-        oracle.methods.getPriceOf(...argsPriceOfBtc).call({}, (error: any, result: any) => {
-          setPriceOfBtc(result / 100);
-        });
+      let argsPriceOfBtc = [USDT, WBTC, 2]
+      oracle.methods.getPriceOf(...argsPriceOfBtc).call({}, (error: any, result: any) => {
+        setPriceOfBtc(result / 100);
+      });
 
     }
     if (window.web3) {
@@ -342,8 +343,8 @@ const AppHeader = (props: Props) => {
       <Dialog open={open} onClose={handlePromptClose}>
         <DialogTitle>Please select one of the following options:</DialogTitle>
         <DialogActions>
-          <Button sx={{ color: "black" }}onClick={handleDeposit}>Deposit BTC</Button>
-          <Button sx={{ color: "black" }}onClick={handleWithdraw}>Withdraw BTC</Button>
+          <Button sx={{ color: "black" }} onClick={handleDeposit}>Deposit BTC</Button>
+          <Button sx={{ color: "black" }} onClick={handleWithdraw}>Withdraw BTC</Button>
         </DialogActions>
       </Dialog>
       <Dialog open={open2} onClose={handlePromptClose2}>
@@ -359,8 +360,8 @@ const AppHeader = (props: Props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button sx={{ color: "black" }}onClick={handleConfirm}>Deposit BTC</Button>
-          <Button sx={{ color: "black" }}onClick={handlePromptClose2}>Close</Button>
+          <Button sx={{ color: "black" }} onClick={handleConfirm}>Deposit BTC</Button>
+          <Button sx={{ color: "black" }} onClick={handlePromptClose2}>Close</Button>
         </DialogActions>
       </Dialog>
       <Dialog open={open3} onClose={handlePromptClose3}>
@@ -376,8 +377,8 @@ const AppHeader = (props: Props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button sx={{ color: "black" }}onClick={handleConfirm2}>Withdraw BTC</Button>
-          <Button sx={{ color: "black" }}onClick={handlePromptClose3}>Close</Button>
+          <Button sx={{ color: "black" }} onClick={handleConfirm2}>Withdraw BTC</Button>
+          <Button sx={{ color: "black" }} onClick={handlePromptClose3}>Close</Button>
         </DialogActions>
       </Dialog>
       {user && matchNewWorfklow && (
@@ -428,21 +429,29 @@ const AppHeader = (props: Props) => {
       )}
 
       {user && (
-        <ConnectWrapper>
-          <button onClick={handleOpen}>
-            <Text variant="persistent" value={
-              "Vault Balance: "
-              + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
-              + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
-              + ")"
-            } />
-          </button>
-        </ConnectWrapper>
-      )}
-
-      {user && (
         <UserWrapper style={{ marginLeft: matchNewWorfklow ? "auto" : 0 }}>
-          <UserMenu />
+          <div>
+            <Grid container>
+              <Grid item>
+                <ConnectWrapper>
+                  <button onClick={handleOpen}>
+                    <Text variant="persistent" value={
+                      "Vault Balance: "
+                      + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
+                      + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
+                      + ")"
+                    } />
+                  </button>
+                </ConnectWrapper>
+              </Grid>
+              <Grid item style={{ marginLeft: "100px" }}>
+                <UserMenu />
+              </Grid>
+            </Grid>
+            {/* <span>123</span>
+            <span></span> */}
+          </div>
+          {/* <UserMenu /> */}
         </UserWrapper>
       )}
 
