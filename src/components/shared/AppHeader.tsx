@@ -294,14 +294,12 @@ const AppHeader = (props: Props) => {
 
   useEffect(() => {
     (async () => {
-      if (localStorage.getItem("isWalletConnected") === "true") {
         //check metamask are connected before
         window.web3 = new Web3(window.web3.currentProvider);
         window.ethereum.enable();
         let validAccount = await window.ethereum.request({ method: "eth_accounts" });
         if (validAccount) {
         }
-      }
     })
       ()
   }, [])
