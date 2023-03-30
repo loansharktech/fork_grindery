@@ -437,8 +437,8 @@ const AppHeader = (props: Props) => {
                   <button onClick={handleOpen}>
                     <Text variant="persistent" value={
                       "Vault Balance: "
-                      + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
-                      + Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
+                      + Number(Number(Number(amount) / 100000000 * window.web3?.utils?.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
+                      + Number(Number(Number(amount) / 100000000 * window.web3?.utils?.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
                       + ")"
                     } />
                   </button>
