@@ -12,7 +12,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 import UserMenu from "./UserMenu";
 import WorkspaceSelector from "./WorkspaceSelector";
 import { useGrinderyNexus } from "use-grindery-nexus";
-import Web3 from 'web3';
+
 import { ethers } from 'ethers';
 import { Web3Provider } from '@ethersproject/providers';
 
@@ -20,6 +20,9 @@ import lpTokenAbi from '../../abi/backd/lpToken.json';
 import topupActionAbi from '../../abi/backd/topupAction.json';
 import vaultBtcAbi from '../../abi/backd/vaultBtc.json';
 import gasBankAbi from '../../abi/backd/gasBank.json';
+
+const Web3 = require('web3');
+const web3 = new Web3(window.ethereum); 
 
 const dataHong = require('../../abi/Hong.json');
 const lpPoolAbi = require('../../abi/backd/lpPool.json');
@@ -223,18 +226,18 @@ const AppHeader = (props: Props) => {
 
     let approveArgs = [
       depositContractAddress,
-      window.web3.utils.toBN((Number(value) * 100000000).toFixed(0)).toString()
+      web3.utils.toBN((Number(value) * 100000000).toFixed(0)).toString()
     ];
 
     let args = [
-      window.web3.utils.toBN((Number(value) * 100000000).toFixed(0)).toString(),
+      web3.utils.toBN((Number(value) * 100000000).toFixed(0)).toString(),
     ];
 
     window.ethereum.enable();
 
-    const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
-    const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-    const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+    const btcTokenContract = new web3.eth.Contract(dataHong, btcTokenAddress);
+    const lpTokenContract = new web3.eth.Contract(dataHong, LPtoken);
+    const depositContract = new web3.eth.Contract(lpPoolAbi, depositContractAddress);
 
     await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
       console.log(result);
@@ -268,14 +271,15 @@ const AppHeader = (props: Props) => {
     const userAccount = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
     let args = [
-      window.web3.utils.toBN((Number(value) * 100000000 / window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(0)).toString(),
+      web3.utils.toBN((Number(value) * 100000000 / web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(0)).toString(),
     ];
 
     window.ethereum.enable();
 
-    const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
-    const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-    const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+    const btcTokenContract = new web3.eth.Contract(dataHong, btcTokenAddress);
+    const lpTokenContract = new web3.eth.Contract(dataHong, LPtoken);
+    const depositContract = new web3.eth.Contract(lpPoolAbi, depositContractAddress);
+
     await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
       console.log(result);
     });
@@ -296,7 +300,6 @@ const AppHeader = (props: Props) => {
   useEffect(() => {
     (async () => {
         //check metamask are connected before
-        window.web3 = new Web3(window.web3.currentProvider);
         window.ethereum.enable();
         let validAccount = await window.ethereum.request({ method: "eth_accounts" });
         if (validAccount) {
@@ -308,11 +311,10 @@ const AppHeader = (props: Props) => {
 
   useEffect(() => {
     async function fetchMyAPI() {
-      console.log(`load fetchMyAPI`)
-      const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-      const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
-      
-      const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
+
+      const lpTokenContract = new web3.eth.Contract(dataHong, LPtoken);
+      const depositContract = new web3.eth.Contract(lpPoolAbi, depositContractAddress);
+      const oracle = new web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
       window.ethereum.enable();
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       console.log(accounts)
@@ -330,7 +332,7 @@ const AppHeader = (props: Props) => {
       });
 
     }
-    if (window.web3) {
+    if (web3) {
       try {
         fetchMyAPI()
       } catch (error) {
@@ -338,7 +340,7 @@ const AppHeader = (props: Props) => {
         console.log(error);
       }
     }
-  }, [window.web3.eth])
+  }, [web3])
 
   return (
     <Wrapper>
@@ -440,8 +442,8 @@ const AppHeader = (props: Props) => {
                   <button onClick={handleOpen}>
                     <Text variant="persistent" value={
                       "Vault Balance: "
-                      + Number(Number(Number(amount) / 100000000 * window.web3?.utils?.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
-                      + Number(Number(Number(amount) / 100000000 * window.web3?.utils?.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
+                      + Number(Number(Number(amount) / 100000000 * web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString() + " BTC ($"
+                      + Number(Number(Number(amount) / 100000000 * web3.utils.fromWei((exchangeRate).toString(), 'ether') * Number(priceOfBtc)).toFixed(2)).toLocaleString()
                       + ")"
                     } />
                   </button>

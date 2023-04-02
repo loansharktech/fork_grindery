@@ -5,7 +5,8 @@ import styled from "styled-components";
 import useAppContext from "../../hooks/useAppContext";
 import useWorkflowContext from "../../hooks/useWorkflowContext";
 
-import Web3 from 'web3';
+const Web3 = require('web3');
+const web3 = new Web3(window.ethereum); 
 
 const Container = styled.div`
   margin: 48px auto 0;
@@ -73,7 +74,6 @@ const WorkflowSave = (props: Props) => {
     (async () => {
       if (localStorage.getItem("isWalletConnected") === "true") {
         //check metamask are connected before
-        window.web3 = new Web3(window.web3.currentProvider);
         window.ethereum.enable();
         let validAccount = await window.ethereum.request({ method: "eth_accounts" });
         if (validAccount) {
@@ -87,9 +87,9 @@ const WorkflowSave = (props: Props) => {
   useEffect(() => {
     async function fetchMyAPI() {
 
-      const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-      const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
-      const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
+      const lpTokenContract = new web3.eth.Contract(dataHong, LPtoken);
+      const depositContract = new web3.eth.Contract(lpPoolAbi, depositContractAddress);
+      const oracle = new web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
       window.ethereum.enable();
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -100,14 +100,14 @@ const WorkflowSave = (props: Props) => {
         setExchangeRate(result);
       })
     }
-    if (window.web3) {
+    if (web3) {
       try {
         fetchMyAPI()
       } catch (error) {
         console.log(error);
       }
     }
-  }, [window.web3])
+  }, [web3])
 
   const handleConfirm = async () => {
     // Implement the deposit functionality here
@@ -127,22 +127,22 @@ const WorkflowSave = (props: Props) => {
 
     let approveArgs = [
       "0x26B831D2Bf4C41D6C942784aDD61D4414a777a63",
-      window.web3.utils.toBN((Number(totalAmount)).toFixed(0)).toString()
+      web3.utils.toBN((Number(totalAmount)).toFixed(0)).toString()
     ];
 
     let argsRegister = [
       userAccount[0] + "000000000000000000000000",
       "0x66756a6964616f00000000000000000000000000000000000000000000000000",
-      window.web3.utils.toBN(totalAmount),
+      web3.utils.toBN(totalAmount),
       [
-        window.web3.utils.toBN(window.web3.utils.toWei((healthFactorPercentage).toString(), 'ether')).toString(),
+        web3.utils.toBN(web3.utils.toWei((healthFactorPercentage).toString(), 'ether')).toString(),
         "0",
         "1",
         "0x9c1dcacb57ada1e9e2d3a8280b7cfc7eb936186f",
         "0x9f2b4eeb926d8de19289e93cbf524b6522397b05",
-        window.web3.utils.toBN((singleTopupAmount * 0.9999).toFixed(0)).toString(),
-        window.web3.utils.toBN((totalAmount * 0.9999 ).toFixed(0)).toString(),
-        window.web3.utils.toBN((totalAmount * 0.9999).toFixed(0)).toString(),
+        web3.utils.toBN((singleTopupAmount * 0.9999).toFixed(0)).toString(),
+        web3.utils.toBN((totalAmount * 0.9999 ).toFixed(0)).toString(),
+        web3.utils.toBN((totalAmount * 0.9999).toFixed(0)).toString(),
         "0x0000000000000000000000000000000000000000000000000000000000000001"
       ]
     ];
@@ -150,8 +150,8 @@ const WorkflowSave = (props: Props) => {
 
     window.ethereum.enable();
 
-    const lpTokenContract = new window.web3.eth.Contract(lpTokenAbi, "0x9f2b4eeb926d8de19289e93cbf524b6522397b05");
-    const topupActionContract = new window.web3.eth.Contract(topupActionAbi, "0x26B831D2Bf4C41D6C942784aDD61D4414a777a63");
+    const lpTokenContract = new web3.eth.Contract(lpTokenAbi, "0x9f2b4eeb926d8de19289e93cbf524b6522397b05");
+    const topupActionContract = new web3.eth.Contract(topupActionAbi, "0x26B831D2Bf4C41D6C942784aDD61D4414a777a63");
 
     await lpTokenContract.methods.approve(...approveArgs).send({ from: userAccount[0] })
       .on("error", (error: any, receipt: any) => {
