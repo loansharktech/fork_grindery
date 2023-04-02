@@ -19,6 +19,9 @@ const dataHong = require('../../abi/Hong.json');
 const lpPoolAbi = require('../../abi/backd/lpPool.json');
 const FujiOracle = require('../../abi/fujidao/FujiOracle.json');
 
+const Web3 = require('web3');
+const web3 = new Web3(window.ethereum); 
+
 const btcTokenAddress = '0x9C1DCacB57ADa1E9e2D3a8280B7cfC7EB936186F';
 const depositContractAddress = '0xCE7cb549c42Ba8a6654AdE82f3d77D6F7d2BCD78';
 const LPtoken = '0x9f2b4EEb926d8de19289E93CBF524b6522397B05';
@@ -125,12 +128,12 @@ const WorkflowInputField = ({
         handleFieldChange(inputField.default);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (window.web3) {
+      if (web3) {
         try {
           console.log(`start get web3 amount`)
-          const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
-          const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
-          const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
+          const lpTokenContract = new web3.eth.Contract(dataHong, LPtoken);
+          const depositContract = new web3.eth.Contract(lpPoolAbi, depositContractAddress);
+          const oracle = new web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
           await window.ethereum.enable();
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
           const balance = await lpTokenContract.methods.balanceOf(accounts[0]).call();
@@ -355,7 +358,7 @@ const WorkflowInputField = ({
       typeof idx !== "undefined" && Array.isArray(workflowValue)
         ? workflowValue[idx]
         : (["yourCurrentSmartVaultBalance"].includes(field.key)
-          ? Number(Number(Number(amount) / 100000000 * window.web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString()
+          ? Number(Number(Number(amount) / 100000000 * web3.utils.fromWei((exchangeRate).toString(), 'ether')).toFixed(2)).toLocaleString()
           : workflowValue
         );
     const commonProps = {
