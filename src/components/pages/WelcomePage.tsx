@@ -86,19 +86,11 @@ const WelcomePage = (props: Props) => {
     <Container>
       <Wrapper>
         <Img src="/images/favicon.png" alt="Welcome" />
-        <Title>Welcome to Flow</Title>
+        <Title>Welcome to Loanshark Automation Toolbox</Title>
         <Desc>
-          We are the easiest way for people and organizations to connect Apps
-          and dApps across chains and protocols.
+          A no-code toolbox for building on-chain and off-chain automation.
         </Desc>
         <ConnectButton />
-        <Disclaimer>
-          Grindery Flow uses{" "}
-          <a href="https://metamask.io/" target="_blank" rel="noreferrer">
-            MetaMask
-          </a>{" "}
-          to authenticate users.
-        </Disclaimer>
       </Wrapper>
     </Container>
   );
