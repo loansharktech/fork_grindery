@@ -191,7 +191,6 @@ const StepInput = ({ outputFields }: Props) => {
   };
 
   const handleContinueClick = () => {
-    console.log(`start handleContinueClick`)
     setInputError("");
     setErrors(true);
 
@@ -389,6 +388,7 @@ const StepInput = ({ outputFields }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [operationType, gas]);
+
 
   return operation && operationIsAuthenticated ? (
     <Container>

@@ -124,7 +124,7 @@ const RootStack = (props: Props) => {
 
     return (
       <NotificationsContextProvider>
-        <NotificationsModal />
+        {/* <NotificationsModal /> */}
         {isWorkspaceSwitching ? (
           <div style={{ textAlign: "center", margin: "50px auto" }}>
             <CircularProgress />

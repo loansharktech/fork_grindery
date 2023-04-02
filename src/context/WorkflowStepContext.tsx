@@ -156,7 +156,6 @@ export const WorkflowStepContextProvider = ({
 
   const getConnectoAction = (actionName: string) => {
     let action
-    console.log(`get connect to actionn 159: `, actionName)
     if (actionName === 'erc1155') {
       action = {
         "key": "erc1155",
@@ -1621,15 +1620,15 @@ export const WorkflowStepContextProvider = ({
                   "type": "string",
                   "placeholder": "Select Your Smart Vault Position",
                   "list": false,
-                  "required": true
+                  "required": false
                 },
                 {
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
-                  "label": "Percentage of your deposite used for each top-up",
+                  "label": "Percentage of your deposit used for each top-up",
                   "type": "string",
                   "placeholder": "Enter the Percentage",
                   "list": false,
-                  "required": true
+                  "required": false
                 }
               ],
               "outputFields": [],
@@ -1653,15 +1652,15 @@ export const WorkflowStepContextProvider = ({
                   "type": "string",
                   "placeholder": "Select Your Smart Vault Position",
                   "list": false,
-                  "required": true
+                  "required": false
                 },
                 {
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
-                  "label": "Percentage of your deposite used for each top-up",
+                  "label": "Percentage of your deposit used for each top-up",
                   "type": "string",
                   "placeholder": "Enter the Percentage",
                   "list": false,
-                  "required": true
+                  "required": false
                 }
               ],
               "outputFields": [],
@@ -1687,15 +1686,15 @@ export const WorkflowStepContextProvider = ({
                   "type": "string",
                   "placeholder": "Select Your Smart Vault Position",
                   "list": false,
-                  "required": true
+                  "required": false
                 },
                 {
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
-                  "label": "Percentage of your deposite used for each top-up",
+                  "label": "Percentage of your deposit used for each top-up",
                   "type": "string",
                   "placeholder": "Enter the Percentage",
                   "list": false,
-                  "required": true
+                  "required": false
                 }
               ],
               "outputFields": [],
@@ -1719,15 +1718,15 @@ export const WorkflowStepContextProvider = ({
                   "type": "string",
                   "placeholder": "Select Your Smart Vault Position",
                   "list": false,
-                  "required": true
+                  "required": false
                 },
                 {
                   "key": "percentageOfYourDepositeUsedForEachTopUp",
-                  "label": "Percentage of your deposite used for each top-up",
+                  "label": "Percentage of your deposit used for each top-up",
                   "type": "string",
                   "placeholder": "Enter the Percentage",
                   "list": false,
-                  "required": true
+                  "required": false
                 }
               ],
               "outputFields": [],
@@ -1744,14 +1743,12 @@ export const WorkflowStepContextProvider = ({
 
   // const getConnector = async (key: string) => {
   const getConnector = (key: string) => {
-    console.log(`getConnector line 158`, key)
     const res = getConnectoAction(key)
     // const res = await client?.getDriver(
     //   key,
     //   isLocalOrStaging ? "staging" : undefined,
     //   false
     // );
-    console.log(`getConnector line 164`, res)
 
     if (res) {
       setConnector(res);

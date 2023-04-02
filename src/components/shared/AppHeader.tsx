@@ -162,10 +162,10 @@ const AppHeader = (props: Props) => {
   console.log(`app context:`,user)
   const { size, width } = useWindowSize();
   let navigate = useNavigate();
-  const [amount, setAmount] = useState<Number>(0);
-  const [exchangeRate, setExchangeRate] = useState<Number>(0);
+  const [amount, setAmount] = useState<number>(0);
+  const [exchangeRate, setExchangeRate] = useState<number>(0);
   console.log(exchangeRate)
-  const [priceOfBtc, setPriceOfBtc] = useState<Number>(0);
+  const [priceOfBtc, setPriceOfBtc] = useState<number>(0);
   const isMatchingWorkflowNew = useMatch("/workflows/new");
   const isMatchingWorkflowEdit = useMatch("/workflows/edit/:key");
   const matchNewWorfklow = isMatchingWorkflowNew || isMatchingWorkflowEdit;
@@ -276,7 +276,6 @@ const AppHeader = (props: Props) => {
     const btcTokenContract = new window.web3.eth.Contract(dataHong, btcTokenAddress);
     const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
     const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
-
     await btcTokenContract.methods.totalSupply().call({}, (error: any, result: any) => {
       console.log(result);
     });
@@ -316,8 +315,9 @@ const AppHeader = (props: Props) => {
       const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
       window.ethereum.enable();
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
+      console.log(accounts)
       lpTokenContract.methods.balanceOf(accounts[0]).call({}, (error: any, result: any) => {
+        console.log(`balanceOf`,result)
         setAmount(result);
       })
       depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
@@ -330,7 +330,6 @@ const AppHeader = (props: Props) => {
       });
 
     }
-    console.log(window.web3)
     if (window.web3) {
       try {
         fetchMyAPI()
@@ -431,7 +430,7 @@ const AppHeader = (props: Props) => {
         </ConnectWrapper>
       )}
 
-      {(user && (exchangeRate?exchangeRate:0 >0)) && (
+      {(user && ((exchangeRate?exchangeRate:0) >0)) && (
         // {user && (
         <UserWrapper style={{ marginLeft: matchNewWorfklow ? "auto" : 0 }}>
           <div>
