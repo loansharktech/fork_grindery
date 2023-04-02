@@ -50,7 +50,7 @@ const GasAlert = (props: Props) => {
 
   useEffect(() => {
     if (chain) {
-      getDroneAddress(chain, workspaceToken || token?.access_token || "");
+      // getDroneAddress(chain, workspaceToken || token?.access_token || "");
     }
   }, [chain, token?.access_token, workspaceToken]);
 

@@ -176,44 +176,44 @@ const StepAuthentication = (props: Props) => {
   };
 
   const handleAuthClick = () => {
-    if (type === "trigger") {
-      updateWorkflow({
-        "trigger.authentication": undefined,
-        "trigger.authenticationKey": undefined,
-        "trigger.input": {},
-      });
-    } else {
-      updateWorkflow({
-        ["actions[" + index + "].authentication"]: undefined,
-        ["actions[" + index + "].authenticationKey"]: undefined,
-        ["actions[" + index + "].input"]: {},
-      });
-    }
-    setOperationIsTested(false);
-    if (connector?.authentication?.type === "oauth2") {
-      window.removeEventListener("message", receiveMessage, false);
-      const width = 375,
-        height = 500,
-        left = window.screen.width / 2 - width / 2,
-        top = window.screen.height / 2 - height / 2;
+    // if (type === "trigger") {
+    //   updateWorkflow({
+    //     "trigger.authentication": undefined,
+    //     "trigger.authenticationKey": undefined,
+    //     "trigger.input": {},
+    //   });
+    // } else {
+    //   updateWorkflow({
+    //     ["actions[" + index + "].authentication"]: undefined,
+    //     ["actions[" + index + "].authenticationKey"]: undefined,
+    //     ["actions[" + index + "].input"]: {},
+    //   });
+    // }
+    // setOperationIsTested(false);
+    // if (connector?.authentication?.type === "oauth2") {
+    //   window.removeEventListener("message", receiveMessage, false);
+    //   const width = 375,
+    //     height = 500,
+    //     left = window.screen.width / 2 - width / 2,
+    //     top = window.screen.height / 2 - height / 2;
 
-      let windowObjectReference = window.open(
-        `${AUTH_ENDPOINT}/${connector.key}/auth?access_token=${
-          workspaceToken || access_token
-        }&redirect_uri=${window.location.origin}/auth`,
-        "_blank",
-        "status=no, toolbar=no, menubar=no, width=" +
-          width +
-          ", height=" +
-          height +
-          ", top=" +
-          top +
-          ", left=" +
-          left
-      );
-      windowObjectReference?.focus();
-      window.addEventListener("message", receiveMessage, false);
-    }
+    //   let windowObjectReference = window.open(
+    //     `${AUTH_ENDPOINT}/${connector.key}/auth?access_token=${
+    //       workspaceToken || access_token
+    //     }&redirect_uri=${window.location.origin}/auth`,
+    //     "_blank",
+    //     "status=no, toolbar=no, menubar=no, width=" +
+    //       width +
+    //       ", height=" +
+    //       height +
+    //       ", top=" +
+    //       top +
+    //       ", left=" +
+    //       left
+    //   );
+    //   windowObjectReference?.focus();
+    //   window.addEventListener("message", receiveMessage, false);
+    // }
   };
 
   const updateFieldsDefinition = () => {
