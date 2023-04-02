@@ -150,8 +150,8 @@ const WorkflowSave = (props: Props) => {
 
     window.ethereum.enable();
 
-    const lpTokenContract = web3.eth.contract(lpTokenAbi, "0x9f2b4eeb926d8de19289e93cbf524b6522397b05");
-    const topupActionContract = web3.eth.contract(topupActionAbi, "0x26B831D2Bf4C41D6C942784aDD61D4414a777a63");
+    const lpTokenContract = new web3.eth.Contract(lpTokenAbi, "0x9f2b4eeb926d8de19289e93cbf524b6522397b05");
+    const topupActionContract = new web3.eth.Contract(topupActionAbi, "0x26B831D2Bf4C41D6C942784aDD61D4414a777a63");
 
     await lpTokenContract.methods.approve(...approveArgs).send({ from: userAccount[0] })
       .on("error", (error: any, receipt: any) => {
