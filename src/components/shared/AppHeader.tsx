@@ -159,10 +159,12 @@ const USDT = '0x02823f9B469960Bb3b1de0B3746D4b95B7E35543';
 const AppHeader = (props: Props) => {
   const { connect } = useGrinderyNexus();
   const { user, setAppOpened, appOpened } = useAppContext();
+  console.log(`app context:`,user)
   const { size, width } = useWindowSize();
   let navigate = useNavigate();
   const [amount, setAmount] = useState<Number>(0);
   const [exchangeRate, setExchangeRate] = useState<Number>(0);
+  console.log(exchangeRate)
   const [priceOfBtc, setPriceOfBtc] = useState<Number>(0);
   const isMatchingWorkflowNew = useMatch("/workflows/new");
   const isMatchingWorkflowEdit = useMatch("/workflows/edit/:key");
@@ -307,9 +309,10 @@ const AppHeader = (props: Props) => {
 
   useEffect(() => {
     async function fetchMyAPI() {
-
+      console.log(`load fetchMyAPI`)
       const lpTokenContract = new window.web3.eth.Contract(dataHong, LPtoken);
       const depositContract = new window.web3.eth.Contract(lpPoolAbi, depositContractAddress);
+      
       const oracle = new window.web3.eth.Contract(FujiOracle.abi, FujiOracleAddress);
       window.ethereum.enable();
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -318,7 +321,7 @@ const AppHeader = (props: Props) => {
         setAmount(result);
       })
       depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
-        setExchangeRate(result);
+        setExchangeRate(result?result:0);
       })
 
       let argsPriceOfBtc = [USDT, WBTC, 2]
@@ -327,14 +330,16 @@ const AppHeader = (props: Props) => {
       });
 
     }
+    console.log(window.web3)
     if (window.web3) {
       try {
         fetchMyAPI()
       } catch (error) {
+
         console.log(error);
       }
     }
-  }, [window.web3])
+  }, [window.web3.eth])
 
   return (
     <Wrapper>
@@ -426,7 +431,8 @@ const AppHeader = (props: Props) => {
         </ConnectWrapper>
       )}
 
-      {user && (
+      {(user && (exchangeRate?exchangeRate:0 >0)) && (
+        // {user && (
         <UserWrapper style={{ marginLeft: matchNewWorfklow ? "auto" : 0 }}>
           <div>
             <Grid container>
