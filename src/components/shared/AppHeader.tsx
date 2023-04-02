@@ -162,10 +162,12 @@ const USDT = '0x02823f9B469960Bb3b1de0B3746D4b95B7E35543';
 const AppHeader = (props: Props) => {
   const { connect } = useGrinderyNexus();
   const { user, setAppOpened, appOpened } = useAppContext();
+  console.log(`app context:`,user)
   const { size, width } = useWindowSize();
   let navigate = useNavigate();
   const [amount, setAmount] = useState<Number>(0);
   const [exchangeRate, setExchangeRate] = useState<Number>(0);
+  console.log(exchangeRate)
   const [priceOfBtc, setPriceOfBtc] = useState<Number>(0);
   const isMatchingWorkflowNew = useMatch("/workflows/new");
   const isMatchingWorkflowEdit = useMatch("/workflows/edit/:key");
@@ -320,7 +322,7 @@ const AppHeader = (props: Props) => {
         setAmount(result);
       })
       depositContract.methods.exchangeRate().call({}, (error: any, result: any) => {
-        setExchangeRate(result);
+        setExchangeRate(result?result:0);
       })
 
       let argsPriceOfBtc = [USDT, WBTC, 2]
@@ -333,6 +335,7 @@ const AppHeader = (props: Props) => {
       try {
         fetchMyAPI()
       } catch (error) {
+
         console.log(error);
       }
     }
@@ -428,7 +431,8 @@ const AppHeader = (props: Props) => {
         </ConnectWrapper>
       )}
 
-      {user && (
+      {(user && (exchangeRate?exchangeRate:0 >0)) && (
+        // {user && (
         <UserWrapper style={{ marginLeft: matchNewWorfklow ? "auto" : 0 }}>
           <div>
             <Grid container>
