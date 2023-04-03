@@ -432,8 +432,8 @@ const AppHeader = (props: Props) => {
         </ConnectWrapper>
       )}
 
-      {(user && ((exchangeRate?exchangeRate:0) >0)) && (
-        // {user && (
+      {/* {(user && ((exchangeRate?exchangeRate:0) >0)) && ( */}
+      {user && (
         <UserWrapper style={{ marginLeft: matchNewWorfklow ? "auto" : 0 }}>
           <div>
             <Grid container>
