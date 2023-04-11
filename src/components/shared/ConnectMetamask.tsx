@@ -1,7 +1,8 @@
 import React from "react";
 import { ICONS } from "../../constants";
 import Button from "./Button";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../../use-grindery-nexus/index";
 import AlertBox from "./AlertBox";
 
 declare global {

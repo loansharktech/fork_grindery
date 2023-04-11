@@ -3,7 +3,9 @@ import axios from "axios";
 import _ from "lodash";
 import { useNavigate } from "react-router";
 import { isLocalOrStaging } from "../constants";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../use-grindery-nexus/index";
+
 import useWorkspaceContext from "../hooks/useWorkspaceContext";
 import useNetworkContext from "../hooks/useNetworkContext";
 

@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect, useCallback } from "react";
 import _ from "lodash";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../use-grindery-nexus/index";
 import NexusClient, {
   WorkflowExecution,
   WorkflowExecutionLog,
