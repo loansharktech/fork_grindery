@@ -157,13 +157,13 @@ export const GrinderyNexusContextProvider = (
   const [chain, setChain] = useState<number | string | null>(null);
 
   // Auth message
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>('');
 
   // Authentication token object
   const [token, setToken] = useState<AuthToken | null>(null);
 
   // Signed authentication message
-  const [signature, setSignature] = useState<string | null>(null);
+  const [signature, setSignature] = useState<string | null>('');
 
   // Flow chain user
   const [flowUser, setFlowUser] = useState<FlowUser>({ addr: '' });
@@ -187,15 +187,14 @@ export const GrinderyNexusContextProvider = (
     flowUser.services?.find(service => service.type === 'account-proof');
 
   // Compiled authorization code
-  const code =
-    (message &&
-      signature &&
+  const code = (message && signature &&
       encode(
         JSON.stringify({
           message: message,
           signature: signature,
         })
-      )) ||
+      )) 
+      ||
     (flowProof &&
       flowProof.data &&
       flowProof.data.nonce &&
@@ -212,6 +211,20 @@ export const GrinderyNexusContextProvider = (
         })
       )) ||
     null;
+
+    // const code =    encode(
+    //   JSON.stringify({
+    //     message: `Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..9nPWjk06WbxxhcMO.NmpLzgO6gg3F-wbf5ayH98Ji759vXdtaHqexZICKXkbFrjvr4OZPGDZPvufEV2Yo1KK-wzNtKc3CfTMxcHA34azOu6SyjNxD5l4fPM-tXgMGE86HNevVbjyTiSuuFcFdPMkNN3B3Ion39wR9LXLIn5RzQarKzljA4OPWG9g9dHBzu5999Tqh9_SJ7vDQfYV6qGs-QHVFMftDdmcXHmtTLOo1VTY0Eg.XlVCzsZ9isfgIZuMgemYNw`,
+    //     signature: signature,
+    //   })
+    // )
+    
+  console.log(`message`)
+  console.log(JSON.stringify(message))
+  console.log(`signature`)
+  console.log(JSON.stringify(signature))
+  console.log(JSON.stringify(code))
+  console.log(`code`,flowProof)
 
   // Subscribe to changes
   const addListeners = async (web3ModalProvider: any) => {
@@ -297,35 +310,37 @@ export const GrinderyNexusContextProvider = (
 //     "message": "Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..3KCA0jSGLXHnPFzR.yW6srffjYT1g7cwHS6TI7CDLRDoUtmV-d9KUrw7UHkMUKO9VMZyvJ9XRj8W24tmNTtcu7R5apf7yWoJ1yV2xWQGwZnUpu11y8KytZ0JU9UghdezrorEBaOhkr6EanQZtvomI-aPUsgduNSeHzUGQ_-Aw7UT1FfBjtuLiNSxZt9wM2H8_2GVlNqe554N6uF8tY4HqAbAyz0HMyTg2CKcpiBr280fR_A.W1WU-bpU9MQCxmrzOwyCIw",
 //     "expires_in": 300
 // }
-const tempMsg = "Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..3KCA0jSGLXHnPFzR.yW6srffjYT1g7cwHS6TI7CDLRDoUtmV-d9KUrw7UHkMUKO9VMZyvJ9XRj8W24tmNTtcu7R5apf7yWoJ1yV2xWQGwZnUpu11y8KytZ0JU9UghdezrorEBaOhkr6EanQZtvomI-aPUsgduNSeHzUGQ_-Aw7UT1FfBjtuLiNSxZt9wM2H8_2GVlNqe554N6uF8tY4HqAbAyz0HMyTg2CKcpiBr280fR_A.W1WU-bpU9MQCxmrzOwyCIw"
-setMessage(tempMsg);
+// const tempMsg = "Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..3KCA0jSGLXHnPFzR.yW6srffjYT1g7cwHS6TI7CDLRDoUtmV-d9KUrw7UHkMUKO9VMZyvJ9XRj8W24tmNTtcu7R5apf7yWoJ1yV2xWQGwZnUpu11y8KytZ0JU9UghdezrorEBaOhkr6EanQZtvomI-aPUsgduNSeHzUGQ_-Aw7UT1FfBjtuLiNSxZt9wM2H8_2GVlNqe554N6uF8tY4HqAbAyz0HMyTg2CKcpiBr280fR_A.W1WU-bpU9MQCxmrzOwyCIw"
+// setMessage(tempMsg);
 
 
-    // const resWithCreds = await fetch(
-    //   `${ENGINE_URL}/oauth/session?address=${userAddress}`,
-    //   {
-    //     method: 'GET',
-    //     credentials: 'include',
-    //   }
-    // );
-    // console.log(`resWithCreds`,resWithCreds)
-    // if (resWithCreds && resWithCreds.ok) {
-    //   let json = await resWithCreds.json();
-    //   console.log(json)
-    //   // Set access token if exists
-    //   if (json.access_token) {
-    //     console.log(JSON.stringify(json))
-    //     setToken(json);
-    //   } else if (json.message) {
-    //     // Or set auth message
-    //     setMessage(json.message);
-    //   }
-    // } else {
-    //   console.error(
-    //     'startSessionWithCreds error',
-    //     (resWithCreds && resWithCreds.status) || 'Unknown error'
-    //   );
-    // }
+    const resWithCreds = await fetch(
+      `${ENGINE_URL}/oauth/session?address=${userAddress}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+      }
+    );
+    console.log(`resWithCreds`,resWithCreds)
+    if (resWithCreds && resWithCreds.ok) {
+      let json = await resWithCreds.json();
+      console.log(json)
+      // Set access token if exists
+      if (json.access_token) {
+        console.log(JSON.stringify(json))
+        setToken(json);
+      } else if (json.message) {
+        // Or set auth message
+        console.log(`set message`,json.message)
+        // setMessage(json.message);
+        setMessage(`Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..QN7b-UiEDTTtwR5o.v-KeOabufsbZW5A3F_k5iveDTZEMg1uU2yN2XjlRN4FMTh-mZEouQDy4tK4VY8KWLNfrq_-mPNbN-6V10Zf84Tl41T4Q3j2z2Mod2KCj4c8zAzCgpQLUb6poDY_eaYrt0WEdtTaQLQjWY-cGtEzUcrLmThY4JMdkbcAReyE3U19O3UAMoFsj3hyx1wM_l4KmDQJMFzne2oSEdJGjfN4rk_H2FzaWDg.cMqkd1AtbYjMhUnIvs7XIw`);
+      }
+    } else {
+      console.error(
+        'startSessionWithCreds error',
+        (resWithCreds && resWithCreds.status) || 'Unknown error'
+      );
+    }
   };
 
   // Sign authentication message with MetaMask
@@ -341,7 +356,7 @@ setMessage(tempMsg);
       // });
       // console.log(`326`,newSignature)
       // setSignature(newSignature);
-      setSignature(`0xeb3e24293c0fafd0e5d4a41fb4eb85caf462dd0e5a692d836937301a1510d6a86db9432e59d0db2386d66b1499cf5dfa68450b2fcf5073fb3c8306dae455e9011c`)
+      setSignature(`0x5012b9e8e65118c9b3ce18a067b8bcae219e611e9eb5c805a607d4ffca63ee5b200ebe0babdd5724ded39cf13eb49bc76f5f1152161bf0e2c19c78b5bfe592911c`)
     } catch (error) {
       console.error('signMessage error', error);
       clearUserState();
@@ -350,8 +365,8 @@ setMessage(tempMsg);
 
   // Get access token from the engine API
   const getToken = async (code: string) => {
-    // console.log(code)
-    code= 'eyJtZXNzYWdlIjoiU2lnbmluZyBpbiBvbiBHcmluZGVyeTogZXlKaGJHY2lPaUprYVhJaUxDSmxibU1pT2lKQk1qVTJSME5OSW4wLi5wamtrbE5MTXV3cUlheGlsLnpJeHRVaVhxVU1mNWVPOG1PWHpjTmpPUU51N1hpbm9JamFRS1V3ZnlIbTBKNTh1RTBnNF9keWFhcFUwS3V0cW9EU09tb3N2eGtTeVp4QUpTajRia2FvSl92aUpIRVh2aUtJR01fTDF2X1BFdmtla1pURTlTYWpkUFFaRjlGLVdzRFNqU09KNEhOeUM2MVdNS0Y3YUpOM3JRbEhQQmZQYVpOVUZnNGcwbWxvMFdBVFJHaEM5ZEtBYlBFaHhVWHpNcjJ3X09HOWh0WklhOE9pc1d5UUZkNExVeWwtWmg4QS43RmtlUE1rWUJNajJqd2REdVgwdXZBIiwic2lnbmF0dXJlIjoiMHhhY2JmMmU1Njc1Yjk4ZWFhODIzOWUxZWRmMzU1YjlmOWFlYzMwNTMzYmJlOWJhNDg4ZTJjYTUyNWE4MjE5Yjc3MzA4YmI4YWRkNGFhNDQzMDMyYmJmZDlmNTc3ZjQ3MTU5ZGIyMTY3ZTk4YTVlZGM2OWIxYTE1ZjAzNzJiNDk3ZjFjIn0'
+    console.log(`getToken`,code)
+    // code= 'eyJtZXNzYWdlIjoiU2lnbmluZyBpbiBvbiBHcmluZGVyeTogZXlKaGJHY2lPaUprYVhJaUxDSmxibU1pT2lKQk1qVTJSME5OSW4wLi5wamtrbE5MTXV3cUlheGlsLnpJeHRVaVhxVU1mNWVPOG1PWHpjTmpPUU51N1hpbm9JamFRS1V3ZnlIbTBKNTh1RTBnNF9keWFhcFUwS3V0cW9EU09tb3N2eGtTeVp4QUpTajRia2FvSl92aUpIRVh2aUtJR01fTDF2X1BFdmtla1pURTlTYWpkUFFaRjlGLVdzRFNqU09KNEhOeUM2MVdNS0Y3YUpOM3JRbEhQQmZQYVpOVUZnNGcwbWxvMFdBVFJHaEM5ZEtBYlBFaHhVWHpNcjJ3X09HOWh0WklhOE9pc1d5UUZkNExVeWwtWmg4QS43RmtlUE1rWUJNajJqd2REdVgwdXZBIiwic2lnbmF0dXJlIjoiMHhhY2JmMmU1Njc1Yjk4ZWFhODIzOWUxZWRmMzU1YjlmOWFlYzMwNTMzYmJlOWJhNDg4ZTJjYTUyNWE4MjE5Yjc3MzA4YmI4YWRkNGFhNDQzMDMyYmJmZDlmNTc3ZjQ3MTU5ZGIyMTY3ZTk4YTVlZGM2OWIxYTE1ZjAzNzJiNDk3ZjFjIn0'
     const res = await fetch(`${ENGINE_URL}/oauth/token`, {
       method: 'POST',
       headers: {
@@ -365,8 +380,11 @@ setMessage(tempMsg);
     console.log(res)
     if (res.ok) {
       let result = await res.json();
+      console.log(result)
+      console.log(flowProof)
       // Set address and chain if Flow user proofed
       if (flowProof) {
+        console.log(flowProof)
         setAddress((flowUser && flowUser.addr) || null);
         setChain('flow:mainnet');
       }
