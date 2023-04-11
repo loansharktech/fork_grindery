@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../../use-grindery-nexus/index";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { SCREEN } from "../../constants";
