@@ -1738,6 +1738,195 @@ export const WorkflowStepContextProvider = ({
         "user": "eip155:1:0x9C4De71cDbF4956c0Ab5c23d04912315865B7aA8"
       }
     }
+    else if (actionName === '1inch'){
+      action = {
+        "key": "1inch",
+        "name": "1Inch",
+        "version": "1.0.0",
+        "platformVersion": "1.0.0",
+        "type": "web3",
+        "triggers": [
+          {
+            "key": "priceIsBelow",
+            "name": "Price is Below",
+            "display": {
+              "label": "Price is Below",
+              "description": "Price is Below"
+            },
+            "operation": {
+              "type": "blockchain:call",
+              "signature": "function addSigner(address account)",
+              "inputFields": [
+                {
+                  "key": "priceIsBelow",
+                  "label": "Price Is Below*",
+                  "type": "string",
+                  "placeholder": "0",
+                  "list": false,
+                  "required": false
+                }
+              ],
+              "outputFields": [],
+              "sample": {}
+            }
+          },
+        ],
+        "actions": [
+          {
+            "key": "priceIsBelow",
+            "name": "Price is Below",
+            "display": {
+              "label": "Price is Below",
+              "description": "Price is Below"
+            },
+            "operation": {
+              "type": "blockchain:call",
+              "signature": "function addSigner(address account)",
+              "inputFields": [
+                {
+                  "key": "priceIsBelow",
+                  "label": "Price Is Below*",
+                  "type": "string",
+                  "placeholder": "0",
+                  "list": false,
+                  "required": false
+                }
+              ],
+              "outputFields": [],
+              "sample": {}
+            }
+          },
+        ],
+        "icon": "https://cryptologos.cc/logos/1inch-1inch-logo.png?v=024",
+        "user": "eip155:1:0x9C4De71cDbF4956c0Ab5c23d04912315865B7aA8"
+      }
+    }
+    else if (actionName === 'uniswap'){
+      action = {
+        "key": "uniswap",
+        "name": "Uniswap V3",
+        "version": "1.0.0",
+        "platformVersion": "1.0.0",
+        "type": "web3",
+        "triggers": [
+          {
+            "key": "lpOutOfRange",
+            "name": "LP out of range ",
+            "display": {
+              "label": "LP out of range ",
+              "description": "LP out of range "
+            },
+            "operation": {
+              "type": "blockchain:call",
+              "signature": "function addSigner(address account)",
+              "inputFields": [
+                {
+                  "key": "healthFactorIsBelow",
+                  "label": "Health Factor is below*",
+                  "type": "string",
+                  "placeholder": "0",
+                  "list": false,
+                  "required": false
+                }
+              ],
+              "outputFields": [],
+              "sample": {}
+            }
+          },
+        ],
+        "actions": [
+          {
+            "key": "healthFactorIsBelow",
+            "name": "Health Factor is below",
+            "display": {
+              "label": "Health Factor is below",
+              "description": "Health Factor is below"
+            },
+            "operation": {
+              "type": "blockchain:call",
+              "signature": "function addSigner(address account)",
+              "inputFields": [
+                {
+                  "key": "healthFactorIsBelow",
+                  "label": "Health Factor is below*",
+                  "type": "string",
+                  "placeholder": "0",
+                  "list": false,
+                  "required": false
+                }
+              ],
+              "outputFields": [],
+              "sample": {}
+            }
+          },
+        ],
+        "icon": "https://cryptologos.cc/logos/uniswap-uni-logo.png?v=024",
+        "user": "eip155:1:0x9C4De71cDbF4956c0Ab5c23d04912315865B7aA8"
+      }
+    }
+    else if (actionName === 'curve'){
+      action = {
+        "key": "curve",
+        "name": "Curve",
+        "version": "1.0.0",
+        "platformVersion": "1.0.0",
+        "type": "web3",
+        "triggers": [
+          {
+            "key": "poolImbalanceRatio",
+            "name": "Pool Imbalance Ratio",
+            "display": {
+              "label": "Pool Imbalance Ratio",
+              "description": "Pool Imbalance Ratio "
+            },
+            "operation": {
+              "type": "blockchain:call",
+              "signature": "function addSigner(address account)",
+              "inputFields": [
+                {
+                  "key": "ratio",
+                  "label": "Ratio*",
+                  "type": "string",
+                  "placeholder": "0",
+                  "list": false,
+                  "required": false
+                }
+              ],
+              "outputFields": [],
+              "sample": {}
+            }
+          },
+        ],
+        "actions": [
+          {
+            "key": "healthFactorIsBelow",
+            "name": "Health Factor is below",
+            "display": {
+              "label": "Health Factor is below",
+              "description": "Health Factor is below"
+            },
+            "operation": {
+              "type": "blockchain:call",
+              "signature": "function addSigner(address account)",
+              "inputFields": [
+                {
+                  "key": "healthFactorIsBelow",
+                  "label": "Health Factor is below*",
+                  "type": "string",
+                  "placeholder": "0",
+                  "list": false,
+                  "required": false
+                }
+              ],
+              "outputFields": [],
+              "sample": {}
+            }
+          },
+        ],
+        "icon": "https://cryptologos.cc/logos/curve-dao-token-crv-logo.png?v=024",
+        "user": "eip155:1:0x9C4De71cDbF4956c0Ab5c23d04912315865B7aA8"
+      }
+    }
     return action
   }
 
