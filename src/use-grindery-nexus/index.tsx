@@ -332,8 +332,8 @@ export const GrinderyNexusContextProvider = (
       } else if (json.message) {
         // Or set auth message
         console.log(`set message`,json.message)
-        // setMessage(json.message);
-        setMessage(`Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..QN7b-UiEDTTtwR5o.v-KeOabufsbZW5A3F_k5iveDTZEMg1uU2yN2XjlRN4FMTh-mZEouQDy4tK4VY8KWLNfrq_-mPNbN-6V10Zf84Tl41T4Q3j2z2Mod2KCj4c8zAzCgpQLUb6poDY_eaYrt0WEdtTaQLQjWY-cGtEzUcrLmThY4JMdkbcAReyE3U19O3UAMoFsj3hyx1wM_l4KmDQJMFzne2oSEdJGjfN4rk_H2FzaWDg.cMqkd1AtbYjMhUnIvs7XIw`);
+        setMessage(json.message);
+        // setMessage(`Signing in on Grindery: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..QN7b-UiEDTTtwR5o.v-KeOabufsbZW5A3F_k5iveDTZEMg1uU2yN2XjlRN4FMTh-mZEouQDy4tK4VY8KWLNfrq_-mPNbN-6V10Zf84Tl41T4Q3j2z2Mod2KCj4c8zAzCgpQLUb6poDY_eaYrt0WEdtTaQLQjWY-cGtEzUcrLmThY4JMdkbcAReyE3U19O3UAMoFsj3hyx1wM_l4KmDQJMFzne2oSEdJGjfN4rk_H2FzaWDg.cMqkd1AtbYjMhUnIvs7XIw`);
       }
     } else {
       console.error(
@@ -350,13 +350,13 @@ export const GrinderyNexusContextProvider = (
     console.log(userAccount)
     if (!web3Modal) return;
     try {
-      // const newSignature = await lib.provider.request({
-      //   method: 'personal_sign',
-      //   params: [msg, userAccount],
-      // });
-      // console.log(`326`,newSignature)
-      // setSignature(newSignature);
-      setSignature(`0x5012b9e8e65118c9b3ce18a067b8bcae219e611e9eb5c805a607d4ffca63ee5b200ebe0babdd5724ded39cf13eb49bc76f5f1152161bf0e2c19c78b5bfe592911c`)
+      const newSignature = await lib.provider.request({
+        method: 'personal_sign',
+        params: [msg, userAccount],
+      });
+      console.log(`326`,newSignature)
+      setSignature(newSignature);
+      // setSignature(`0x5012b9e8e65118c9b3ce18a067b8bcae219e611e9eb5c805a607d4ffca63ee5b200ebe0babdd5724ded39cf13eb49bc76f5f1152161bf0e2c19c78b5bfe592911c`)
     } catch (error) {
       console.error('signMessage error', error);
       clearUserState();
