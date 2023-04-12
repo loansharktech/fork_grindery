@@ -4,7 +4,8 @@ import _ from "lodash";
 import { Alert } from "grindery-ui";
 import { ICONS } from "../../constants";
 import GasInput from "./GasInput";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../../use-grindery-nexus/index";
 import useWorkspaceContext from "../../hooks/useWorkspaceContext";
 import axios from "axios";
 

@@ -1,6 +1,7 @@
 import NexusClient from "grindery-nexus-client";
 import React, { useState, createContext, useEffect } from "react";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../use-grindery-nexus/index";
 import { defaultFunc, replaceTokens } from "../helpers/utils";
 
 export type Workspace = {

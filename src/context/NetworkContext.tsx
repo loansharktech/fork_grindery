@@ -1,7 +1,8 @@
 //import NexusClient from "grindery-nexus-client";
 import axios from "axios";
 import React, { createContext, useEffect, useReducer } from "react";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../use-grindery-nexus/index";
 import { isLocalOrStaging } from "../constants";
 import useWorkspaceContext from "../hooks/useWorkspaceContext";
 

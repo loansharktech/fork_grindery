@@ -10,7 +10,8 @@ import ConnectorSubmissionStep2 from "./ConnectorSubmissionStep2";
 import ConnectorSubmissionLoading from "./ConnectorSubmissionLoading";
 import { CDS_EDITOR_API_ENDPOINT, isLocalOrStaging } from "../../constants";
 import useNetworkContext from "../../hooks/useNetworkContext";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../../use-grindery-nexus/index";
 import useWorkspaceContext from "../../hooks/useWorkspaceContext";
 import { useNavigate } from "react-router-dom";
 

@@ -1,5 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../use-grindery-nexus/index";
 import NexusClient from "grindery-nexus-client";
 import { Workspace } from "./WorkspaceContext";
 import axios from "axios";

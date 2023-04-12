@@ -1,10 +1,15 @@
 import React, { useState, createContext, useEffect, useCallback } from "react";
 import _ from "lodash";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../use-grindery-nexus/index";
 import NexusClient, {
   WorkflowExecution,
   WorkflowExecutionLog,
 } from "grindery-nexus-client";
+// import NexusClient, {
+//   WorkflowExecution,
+//   WorkflowExecutionLog,
+// } from "../use-grindery-nexus/index";
 import { Workflow } from "../types/Workflow";
 import { isLocalOrStaging, RIGHTBAR_TABS, SCREEN } from "../constants";
 import { Connector } from "../types/Connector";
@@ -375,6 +380,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
   const initClient = (accessToken: string) => {
     const nexus = new NexusClient();
     nexus.authenticate(accessToken);
+    console.log(`nexus`,nexus)
     setClient(nexus);
   };
 
@@ -470,6 +476,7 @@ export const AppContextProvider = ({ children }: AppContextProps) => {
     }
   }, [workspaceToken, token]);
 
+  console.log(`user change`,user)
   return (
     <AppContext.Provider
       value={{

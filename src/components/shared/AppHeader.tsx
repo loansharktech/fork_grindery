@@ -11,7 +11,8 @@ import useWindowSize from "../../hooks/useWindowSize";
 import { useMatch, useNavigate } from "react-router-dom";
 import UserMenu from "./UserMenu";
 import WorkspaceSelector from "./WorkspaceSelector";
-import { useGrinderyNexus } from "use-grindery-nexus";
+// import { useGrinderyNexus } from "use-grindery-nexus";
+import { useGrinderyNexus } from "../../use-grindery-nexus/index";
 
 import { ethers } from 'ethers';
 import { Web3Provider } from '@ethersproject/providers';
@@ -424,6 +425,7 @@ const AppHeader = (props: Props) => {
         <ConnectWrapper>
           <button
             onClick={() => {
+              console.log(`connect wallet on click`)
               connect();
             }}
           >
