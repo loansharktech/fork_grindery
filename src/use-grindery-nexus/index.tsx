@@ -345,10 +345,8 @@ export const GrinderyNexusContextProvider = (
 
   // Sign authentication message with MetaMask
   const signMessage = async (lib: any, msg: string, userAccount: string) => {
-    console.log(lib)
-    console.log(msg)
-    console.log(userAccount)
-    if (!web3Modal) return;
+    msg = "Loanshark Toolbox";
+       if (!web3Modal) return;
     try {
       const newSignature = await lib.provider.request({
         method: 'personal_sign',
